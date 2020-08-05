@@ -1,4 +1,4 @@
-function BST(value) {
+function BST(value:Number) {
     this.value = value;
     this.left = null;
     this.right = null;
