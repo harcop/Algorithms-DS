@@ -22,10 +22,16 @@ function LinkList() {
     }
 
     this.traverse = function () {
-        
+        let current = this.head;
+        let nodes = [];
+        while(current !== null) {
+            nodes.push(current.value);
+            current = current.next;
+        }
+        return nodes;
     }
 }
 
 const ll = new LinkList();
 ll.append(30).append(20);
-console.log(ll);
+console.log(ll.traverse());
