@@ -30,8 +30,23 @@ function LinkList() {
         }
         return nodes;
     }
+
+    this.remove = function (value) {
+        let current = this.head;
+        let falser = true;
+        while(current.next !== null) {
+            if (current.next.value === value) {
+                current.next = current.next.next;
+                return true;
+            }
+            current = current.next;
+        }
+        return false
+    }
 }
 
 const ll = new LinkList();
-ll.append(30).append(20);
+ll.append(30).append(20).append(40);
+console.log(ll.remove(20));
+console.log(ll.remove(50));
 console.log(ll.traverse());
