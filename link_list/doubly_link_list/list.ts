@@ -20,8 +20,20 @@ function DoubleLinkList() {
         this.tail = node;
         return this;
     }
+
+    this.traverse = function () {
+        let current = this.head;
+        let nodes = [];
+        while(current !== null) {
+            nodes.push(current.value);
+            current = current.next;
+        }
+        return nodes;
+    }
 }
 
 const dll = new DoubleLinkList();
 dll.append(20).append(40).append(30);
-console.log(dll);
+
+// console.log(dll);
+console.log(dll.traverse());
