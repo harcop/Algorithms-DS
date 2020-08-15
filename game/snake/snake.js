@@ -19,7 +19,7 @@ function setup() {
         }
     }
     snake = new Snake();
-    snake.append(15).append(14).append(13).append(12);
+    snake.append(15);
     console.log(snake);
 }
 
@@ -28,12 +28,11 @@ function draw() {
     for (let i = 0; i < grids.length; i++) {
         grids[i].show();
     }
-    
-//    snake.traverse();
+    grids[pos].fruit();
+    snake.move();
 //    console.log(snake) 
-    frameRate(5);
+    frameRate(10);
 }
-
 
 function keyPressed () {
     if (keyCode === UP_ARROW) {
@@ -61,6 +60,7 @@ function keyPressed () {
 function Ceil(i, j) {
     this.x = i;
     this.y = j;
+    this.isPaint = false;
     
     var x = this.x*w;
     var y = this.y*w;
@@ -72,6 +72,12 @@ function Ceil(i, j) {
     
     this.paint = function () {
         fill(0,231,233);
+        rect(x,y,w,w);
+    }
+    
+    this.fruit = function () {
+        this.isPaint = true;
+        fill(40,40,43);
         rect(x,y,w,w);
     }
 }
@@ -96,13 +102,27 @@ function Snake() {
         return this;
     }
     
-    this.traverse = function () {
+    this.move = function () {
         let current = this.head;
         while (current !== null) {
             let value = current.value;
             grids[value].paint();
             if (current.next === null) {
+////                
+                let gps = this.traverse();
+                if (gps.includes(value)) {
+                    this.empty();
+                }
+                
+                let appender = false;
+                let tail = this.tail.value;
+                if (value === pos) {
+                    appender = true;
+                }
                 if (dir === 'right') {
+                    if (appender) {
+                        this.append(tail-1);
+                    }
                     if (grids[value].x === rows - 1){
                         current.value -= rows -1;
                     }else {
@@ -110,6 +130,9 @@ function Snake() {
                     }
                 }
                 else if (dir === 'left') {
+                    if (appender) {
+                        this.append(tail+1);
+                    }
                     if (grids[value].x === 0){
                         current.value += rows -1;
                     }else {
@@ -117,6 +140,15 @@ function Snake() {
                     }
                 }
                 else if (dir === 'down') {
+                    if (appender) {
+                        if (tail-rows < 0) {
+                            tail *=rows-1;
+                            this.append(tail);
+                        }
+                        else {
+                            this.append(tail-rows);
+                        }
+                    }
                     if (grids[value].y === rows -1){
                         current.value -= (rows-1)*rows;
                     }else {
@@ -124,11 +156,21 @@ function Snake() {
                     }
                 }
                 else if (dir === 'up') {
+                    if (appender) {
+                        this.append(tail+rows);
+                    }
                     if (grids[value].y === 0){
                         current.value += (rows-1)*rows;
                     }else {
                         current.value -= rows;
                     }
+                }
+                if (appender) {
+                     let gPos = Math.floor(Math.random() * grids.length);
+                    while (grids[gPos].isPaint === true) {
+                     gPos = Math.floor(Math.random() * grids.length);
+                    }
+                    pos = gPos;
                 }
                 current.oldValue = value;
             }
@@ -139,6 +181,25 @@ function Snake() {
             current = current.previous;
         }
         console.log('ended');
+    }
+    
+    this.traverse = function () {
+        let current = this.head.previous;
+        let gps = [];
+        while(current !== null) {
+            gps.push(current.value);
+            current = current.previous;
+        }
+        return gps;
+    }
+    
+    this.empty = function () {
+        let current = this.head.previous;
+        while(current !== null) {
+            gps.push(current.value);
+            current = current.previous;
+        }
+        
     }
 }
 
