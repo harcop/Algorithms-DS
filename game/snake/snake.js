@@ -33,3 +33,21 @@ function draw() {
 //    console.log(snake) 
     frameRate(5);
 }
+
+function Ceil(i, j) {
+    this.x = i;
+    this.y = j;
+    
+    var x = this.x*w;
+    var y = this.y*w;
+    this.show = function () {
+        stroke(200);
+        fill(233,231,233);
+        rect(x,y,w,w);
+    }
+    
+    this.paint = function () {
+        fill(0,231,233);
+        rect(x,y,w,w);
+    }
+}
