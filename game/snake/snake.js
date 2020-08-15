@@ -34,6 +34,30 @@ function draw() {
     frameRate(5);
 }
 
+
+function keyPressed () {
+    if (keyCode === UP_ARROW) {
+        if (dir === 'right' ||  dir === 'left') {
+            dir = 'up';
+        }
+    }
+    else if (keyCode === DOWN_ARROW) {
+        if (dir === 'right' ||  dir === 'left') {
+            dir = 'down';
+        }
+    }
+    else if (keyCode === RIGHT_ARROW) {
+        if (dir === 'up' ||  dir === 'down') {
+            dir = 'right';
+        }
+    }
+    else if (keyCode === LEFT_ARROW) {
+        if (dir === 'up' ||  dir === 'down') {
+            dir = 'left';
+        }
+    }
+}
+
 function Ceil(i, j) {
     this.x = i;
     this.y = j;
