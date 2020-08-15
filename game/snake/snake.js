@@ -51,3 +51,76 @@ function Ceil(i, j) {
         rect(x,y,w,w);
     }
 }
+
+function Snake() {
+    this.head = null;
+    this.tail = null;
+    
+    this.append = function (value) {
+        const node = new Node(value);
+        let current = this.head;
+        if (current === null) {
+            this.head = node;
+            this.tail = node;
+        }
+        else {
+            current = this.tail;
+            current.previous = node;
+            node.next = current;
+            this.tail = node;
+        }
+        return this;
+    }
+    
+    this.traverse = function () {
+        let current = this.head;
+        while (current !== null) {
+            let value = current.value;
+            grids[value].paint();
+            if (current.next === null) {
+                if (dir === 'right') {
+                    if (grids[value].x === rows - 1){
+                        current.value -= rows -1;
+                    }else {
+                        current.value += 1; 
+                    }
+                }
+                else if (dir === 'left') {
+                    if (grids[value].x === 0){
+                        current.value += rows -1;
+                    }else {
+                        current.value -= 1; 
+                    }
+                }
+                else if (dir === 'down') {
+                    if (grids[value].y === rows -1){
+                        current.value -= (rows-1)*rows;
+                    }else {
+                        current.value += rows;
+                    }
+                }
+                else if (dir === 'up') {
+                    if (grids[value].y === 0){
+                        current.value += (rows-1)*rows;
+                    }else {
+                        current.value -= rows;
+                    }
+                }
+                current.oldValue = value;
+            }
+            else {
+                current.value = current.next.oldValue;
+                current.oldValue = value;
+            }
+            current = current.previous;
+        }
+        console.log('ended');
+    }
+}
+
+function Node(value) {
+    this.value = value;
+    this.oldValue = value;
+    this.previous = null;
+    this.next = null;
+}
