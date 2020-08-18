@@ -15,3 +15,15 @@ function two_sum(arr, value) {
     }   
     return [];
 }
+
+// function two_sum (arr, value, hash = {}) {
+//     for (const ele of arr) {
+//         const alt = Math.floor(value - ele);
+//         if(hash[alt]) {
+//             console.log(alt);
+//             return `${ele} + ${alt} = ${value}`;
+//         }
+//         hash[ele] = ele;
+//         console.log(hash[ele]);
+//     };
+// }
