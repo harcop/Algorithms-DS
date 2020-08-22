@@ -7,25 +7,38 @@ var line1 = [];
 var line2 = [];
 var line3 = [];
 var line4 = [];
-var cars =  [];
+
+var cars = {
+    line1: line1,
+    line2: line2,
+    line3: line3,
+    line4: line4,
+};
 function setup() {
+    console.log(cars["line1"]);
     createCanvas(400, 400);
     rows = floor(height/w);
     cols = floor(width/w);
-    var line1 = new Box(40, line1);
-//    var line2 = new Car(140, line2);
-//    var line3 = new Box(240, line3);
-    var line4 = new Car(340, line4);
-//    cars = [line1, line2, line3, line4];
-    cars = [line1, line4];
+    line1[0] = new Box(40, "line1");
+    line3[0] = new Box(240, "line3");
 }
 
 function draw() {
     background(40,30,90);
     centerLine()
-    cars.forEach(car => {
+
+    line1.forEach(car => {
         car.show();
     })
+//    line2.forEach(car => {
+//        car.show();
+//    })
+    line3.forEach(car => {
+        car.show();
+    })
+//    line4.forEach(car => {
+//        car.show();
+//    })
 }
 
 function Car(x, side) {
@@ -37,22 +50,35 @@ function Car(x, side) {
         stroke(200);
         fill(0,250,250);
         rect(this.x,this.y,carW, carH);
-        this.y++;
-        if (this.y >= height-10) {
-            cars.splice(0,1);
+        this.y = this.y + 5;
+        if (this.y >= height/2 + 3 && this.y < height/2 + 8) {
             let rand = floor(random() * 2);
-            console.log(rand);
-            if (rand === 1) {
-                car = new Box(this.x, this.side);
-            }else {
-                car = new Car(this.x, this.side);
+            let rand2 = floor(random() * 2);
+            let newX = this.x;
+            if (rand2 === 1) {
+                if(this.x === 40) {
+                    newX = 140;
+                }
+                else if(this.x == 140) {
+                    newX = 40
+                }
+                else if(this.x == 240) {
+                    newX = 340
+                }
+                else if(this.x == 340) {
+                    newX = 240
+                }
             }
-            cars.push(car);
-            
+            if (rand === 1) {
+                car = new Box(newX, this.side);
+            }else {
+                car = new Car(newX, this.side);
+            }
+            cars[side].push(car);   
         }
-//        rect(140,0,carW, carH);
-//        rect(240,0,carW, carH);
-//        rect(340,0,carW, carH);
+        if (this.y > height - 5) {
+            cars[side].splice(0,1);
+        }
     }
 }
 
@@ -65,24 +91,37 @@ function Box(x, side) {
         stroke(200);
         fill(250,121,0);
         rect(this.x,this.y,carW, boxH);
-        this.y++;
-        if (this.y >= height-10) {
-            cars.splice(0,1);
+        this.y = this.y + 5;
+        if (this.y >= height/2 + 3 && this.y < height/2 + 8)  {
             let rand = floor(random() * 2);
-            if (rand === 1) {
-                car = new Box(this.x, this.side);
-            }else {
-                car = new Car(this.x, this.side);
+            let rand2 = floor(random() * 2);
+            let newX = this.x;
+            if (rand2 === 1) {
+                if(this.x === 40) {
+                    newX = 140;
+                }
+                else if(this.x == 140) {
+                    newX = 40
+                }
+                else if(this.x == 240) {
+                    newX = 340
+                }
+                else if(this.x == 340) {
+                    newX = 240
+                }
             }
-            cars.push(car);
+            if (rand === 1) {
+                car = new Box(newX, this.side);
+            }else {
+                car = new Car(newX, this.side);
+            }
+            cars[side].push(car);   
         }
-//        rect(140,0,carW, carH);
-//        rect(240,0,carW, carH);
-//        rect(340,0,carW, carH);
+        if (this.y > height - 5) {
+            cars[side].splice(0,1);
+        }
     }
 }
-
-
 
 
 function centerLine() {
