@@ -7,6 +7,8 @@ var line1 = [];
 var line2 = [];
 var line3 = [];
 var line4 = [];
+var x1 = 40;
+var x2 = 240;
 
 var cars = {
     line1: line1,
@@ -21,12 +23,15 @@ function setup() {
     cols = floor(width/w);
     line1[0] = new Box(40, "line1");
     line3[0] = new Box(240, "line3");
+    pair1 = new Pair('l');
+    pair2 = new Pair('r');
 }
 
 function draw() {
     background(40,30,90);
     centerLine()
-
+    pair1.show();
+    pair2.show();
     line1.forEach(car => {
         car.show();
     })
@@ -76,7 +81,15 @@ function Car(x, side) {
             }
             cars[side].push(car);   
         }
-        if (this.y > height - 5) {
+        if (this.y >= height-101 && this.y < height - 10) {
+            if (this.x === x1) {
+                alert('game over2');
+            }
+            else if (this.x === x2) {
+                alert('game over2');
+            }
+        }
+        if (this.y > height - 30) {
             cars[side].splice(0,1);
         }
     }
@@ -117,11 +130,51 @@ function Box(x, side) {
             }
             cars[side].push(car);   
         }
-        if (this.y > height - 5) {
-            cars[side].splice(0,1);
+        if (this.y >= height-70 && this.y < height-50) {
+            if (this.x === x1) {
+                cars[side].splice(0,1);
+            }
+            else if (this.x === x2) {
+                cars[side].splice(0,1);
+            }
+        }
+        if (this.y > height - 40) {
+            alert('game over1');
         }
     }
 }
+
+function keyPressed() {
+    if (keyCode === LEFT_ARROW) {
+        if (x1 === 40) {
+            x1 = 140;
+        }else {
+            x1 = 40;
+        }
+    }
+    else if (keyCode === RIGHT_ARROW) {
+        if (x2 === 240) {
+            x2 = 340;
+        }else {
+            x2 = 240;
+        }
+    }
+}
+
+function Pair(s) {
+    this.y = height-70;
+    
+    this.show = function () {
+        stroke(200);
+        fill(0,122,212);
+        if (s === 'l') {
+            rect(x1, this.y, carW, carH);
+        }else {
+            rect(x2, this.y, carW, carH);
+        }
+    }
+}
+
 
 
 function centerLine() {
