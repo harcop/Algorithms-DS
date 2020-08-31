@@ -11,13 +11,18 @@ function houseOfCats(l: number): number[] {
         }
     });
     let _na = [];
-    let k = 1;
-    for(let i = 1; i<=_l[l]; i++) {
+    let k = l%4===0 ? 2 : 1;
+    for(let i = 0; i<_l[l]; i++) {
         _na.push(k);
         k += 2;
     };
+    l%4===0 ? _na.pop(): _na;
     return _na;
 }
 
 console.log(houseOfCats(10));
+console.log(houseOfCats(6));
 console.log(houseOfCats(2));
+console.log(houseOfCats(20));
+console.log(houseOfCats(12));
+console.log(houseOfCats(8));
