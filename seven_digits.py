@@ -1,7 +1,7 @@
 test = int(input())
 
 for j in range(test):
-    n = int(input())
+    n = input()
 
     digit = {
         1: 2,
@@ -20,7 +20,7 @@ for j in range(test):
 
     _fd = 0
 
-    lst = str(n)
+    lst = n
 
     for i in lst:
         _fd = _fd + digit[int(i)]
