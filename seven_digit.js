@@ -14,10 +14,11 @@ const digit = {
 
 const _ds = [2,3];
 
-const n = 3;
+const n = "000000000";
 let _fd = 0;
-n.toString().split("").forEach(ele => {
+n.split("").forEach(ele => {
     _fd += digit[parseInt(ele)];
+    console.log(_fd);
 });
 console.log(_fd);
 const _f = [];
