@@ -1,4 +1,4 @@
-function houseOfCats(l: number): number[] {
+function houseOfCats1(l: number): number[] {
     let _a = [2,4];
     let _l = Array(l+1);
     _l.fill(0,0,l+1);
@@ -11,18 +11,25 @@ function houseOfCats(l: number): number[] {
         }
     });
     let _na = [];
-    let k = l%4===0 ? 2 : 1;
-    for(let i = 0; i<_l[l]; i++) {
+    let k = 1;
+    for(let i = 1; i<=_l[l]; i++) {
         _na.push(k);
         k += 2;
     };
-    l%4===0 ? _na.pop(): _na;
     return _na;
+}
+
+function houseOfCats(l: number): number[] {
+    let pl: number[] = [];
+    while(l >= 0) {
+        if (l === 0) {
+            break;
+        }
+        pl.unshift(l/2);
+        l -= 4;
+    }
+    return pl;
 }
 
 console.log(houseOfCats(10));
 console.log(houseOfCats(6));
-console.log(houseOfCats(2));
-console.log(houseOfCats(20));
-console.log(houseOfCats(12));
-console.log(houseOfCats(8));
