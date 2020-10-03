@@ -12,3 +12,8 @@ function longestDigitsPrefix(i: string): string {
 }
 
 console.log(longestDigitsPrefix('123aa1'));
+console.log(ldp('123aa1'));
+
+function ldp(str) {
+    return /^\d+/.exec(str)[0]
+}
