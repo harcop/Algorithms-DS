@@ -24,39 +24,30 @@ function LL () {
     }
 
     this.remove = (idx) => {
-        let current = this.head;
-        if (this.head === null) {
-            console.log("am here");
-            return false;
+        let head = this.head;
+        if (head === null || head.next === null) {
+            return null;
         }
-        let f = current;
-        let s = current;
-        console.log("am here", current);
-        for (let i = 0; i <= idx; i++) {
-            if (current.next === null) {
-                console.log("am here");
-                // return false;
-            }
-            current = current.next;
-            s = current;
+        let f = head;
+        let s = head;
+        for (let i = 0; i < idx; i++) {
+            s = s.next;
         }
-        while (current !== null) {
-            s = current.next;
-            console.log(current)
-            if (current !== null){
-                f = f.next;
-            }
-            current = current.next;
+        if (s === null) {
+            head.value = head.next.value;
+            head.next = head.next.next;
+            return this;
         }
-        console.log(f)
-        console.log(s)
-        let nth = f.next;
-        f.next = nth.next;
+        while (s.next !== null) {
+            s = s.next;
+            f = f.next;
+        }
+        f.next = f.next.next;
         return this;
     }
 }
 
 const n = new LL();
-n.insert(2).insert(4).insert(5);
+n.insert(2).insert(4).insert(5).insert(6);
 console.log(n);
-console.log(n.remove(2));
+console.log(n.remove(3));
