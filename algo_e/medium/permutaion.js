@@ -1,4 +1,4 @@
-const arr = [1,2,3,4,5];
+const arr = [1,2,3,4];
 function Node (value) {
     this.value = value
     this.children = {}
@@ -31,4 +31,31 @@ function gen(child, parent) {
     return child[0];
 }
 
-console.log(per(arr));
+
+
+// console.log(per(arr));
+
+function per2 (arr) {
+    let perm = [];
+    for(let i=0; i<arr.length; i++) {
+        let _a = Array(...arr);
+        swap(0,i,_a);
+        let _ad = Array(..._a)
+        perm.push(_ad);
+        for(let j=1; j<_a.length; j++) {
+            if (_a[j+1]) {
+                swap(j,j+1,_a);
+            } else {
+                swap(1,j, _a);
+            }
+            _ad = Array(..._a)
+            perm.push(_ad);
+        }
+    }
+    return perm;
+}
+function swap (a, b, arr) {
+    [arr[a], arr[b]] = [arr[b], arr[a]];
+}
+
+console.log(per2(arr));
