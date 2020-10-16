@@ -89,24 +89,20 @@ function zz (arr) {
             _sw = false
             console.log('am here dl');
             if (_y+1 < h && _x-1 > 0) {
-                _y += 1;
-                _x -= 1;
                 _sw = true;
                 _d = "dl"
             }
             else if (_x-1 === 0 && _y+1 < h) {
-                _x -= 1;
-                _y += 1;
                 _sw = true;
                 _d = "d"
             }
             else if (_y+1 === h && _x > 0) {
-                _x -= 1;
-                _y += 1;
                 _sw = true;
                 _d = "r"
             }
             if (_sw) {
+                _x -= 1;
+                _y += 1;
                 _p = [_y,_x];
                 _f.push(arr[_p[0]][_p[1]])
             } else {
