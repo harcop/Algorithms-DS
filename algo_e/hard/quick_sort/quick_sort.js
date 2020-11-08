@@ -1,23 +1,30 @@
-const arr = [8,5,2,3,5,6,9];
+const arr = [8,5,2,9,5,6,3];
 
-//tome o(log(n)) and space O(log(n))
+//time o(log(n)) and space O(log(n))
 function qs(arr, low, high) {
     const p = partition(arr, low, high);
-    if (p > 0) {
+    if (p > low) {
         qs(arr,0,p)
-        qs(arr,p,high)
+        console.log(arr)
+        qs(arr,p+1,high)
     }
     return arr;
 }
 
 function partition(arr, low, high) {
-    let p = 0;
+    let p = low;
+    console.log(low, high);
+    console.log(arr.slice(low, high))
     for(let i = low+1; i<high; i++) {
         if (arr[i] < arr[p]) {
             swap(i, p);
+            console.log(p)
             p = i;
-        } 
+        } else {
+            p = i;
+        }
     }
+    console.log(p)
     return p;
 }
 
