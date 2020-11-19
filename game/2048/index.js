@@ -2,11 +2,13 @@ const arr = [];
 const w = 4;
 const h = 4;
 
-for (let i = 0; i < h; i++) {
+for (let y = 0; y < h; y++) {
     arr.push([]);
-    for (let j = 0; j< w; j++) {
-        arr[i][j] = 0;
+    for (let x = 0; x< w; x++) {
+        arr[y][x] = 0;
+        $('#gridBox').append(`<div class="smallBox" id="${y}${x}"> .</div>`);
     }
+    $('#gridBox').append('<br/>');
 }
 
 function init () {
@@ -15,8 +17,10 @@ function init () {
     const x2 = Math.floor(Math.random() * 4); 
     const y2 = Math.floor(Math.random() * 4); 
     console.log(x1,x2,y1,y2);
-    arr[x1][y1] = randBtw(2,4)
-    arr[x2][y2] = randBtw(2,4)
+    arr[y1][x1] = randBtw(2,4)
+    arr[y2][x2] = randBtw(2,4)
+    $(`#${y1}${x1}`).text(arr[y1][x1])
+    $(`#${y2}${x2}`).text(arr[y2][x2])
 }
 
 function randBtw (...num) {
@@ -56,9 +60,11 @@ function placeNewDigit () {
     const _p = pos.split('');
     const [y, x] = _p;
     arr[y][x] = randBtw(2,4);
+    $(`#${y}${x}`).text(arr[y][x])
 }
 
 let _m = false;
+let _move = false;
 function swapUp () {
     for(let x = 0; x < w; x++) {
         _m = false;
@@ -70,6 +76,10 @@ function swapUp () {
                 loopUp(ele, x, y);
             }    
         }
+    }
+    if (_move) {
+        placeNewDigit();
+        _move = false;
     }
 }
 function swapDown () {
@@ -83,6 +93,10 @@ function swapDown () {
                 loopDown(ele, x, y);
             }    
         }
+    }    
+    if (_move) {
+        placeNewDigit();
+        _move = false;
     }
 }
 
@@ -97,6 +111,10 @@ function swapLeft () {
                 loopLeft(ele, x, y);
             }    
         }
+    }   
+    if (_move) {
+        placeNewDigit();
+        _move = false;
     }
 }
 
@@ -111,6 +129,10 @@ function swapRight () {
                 loopRight(ele, x, y);
             }    
         }
+    }   
+    if (_move) {
+        placeNewDigit();
+        _move = false;
     }
 }
 
@@ -130,6 +152,11 @@ function loopUp (ele, x, y) {
             console.log(up)
             arr[y][x] = 0;
             arr[_y][x] = ele;
+
+            $(`#${y}${x}`).text('.');
+            $(`#${_y}${x}`).text(ele);
+            
+            _move = true;
             loopUp(ele, x, _y);
         } else {
             console.log(ele, up)
@@ -137,6 +164,10 @@ function loopUp (ele, x, y) {
                 console.log('am')
                 arr[y][x] = 0;
                 arr[_y][x] = ele * 2;
+                $(`#${y}${x}`).text('.');
+                $(`#${_y}${x}`).text(ele*2)
+
+                _move = true;
                 _m  = true;
             }
         }
@@ -151,13 +182,20 @@ function loopDown (ele, x, y) {
             console.log(down)
             arr[y][x] = 0;
             arr[_y][x] = ele;
+            $(`#${y}${x}`).text('.');
+            $(`#${_y}${x}`).text(ele);
+
+            _move = true;
             loopDown(ele, x, _y);
         } else {
             console.log(ele, down)
             if(ele === down && !_m) {
                 console.log('am')
                 arr[y][x] = 0;
-                arr[_y][x] = ele * 2;
+                arr[_y][x] = ele * 2;$(`#${y}${x}`).text('.');
+                $(`#${_y}${x}`).text(ele*2);
+
+                _move = true;
                 _m  = true;
             }
         }
@@ -172,6 +210,10 @@ function loopRight (ele, x, y) {
             console.log(right)
             arr[y][x] = 0;
             arr[y][_x] = ele;
+            $(`#${y}${x}`).text('.');
+            $(`#${y}${_x}`).text(ele);
+
+            _move = true;
             loopRight(ele, _x, y);
         } else {
             console.log(ele, right)
@@ -179,6 +221,10 @@ function loopRight (ele, x, y) {
                 console.log('am')
                 arr[y][x] = 0;
                 arr[y][_x] = ele * 2;
+                $(`#${y}${x}`).text('.');
+                $(`#${y}${_x}`).text(ele*2);
+
+                _move = true;
                 _m  = true;
             }
         }
@@ -193,6 +239,10 @@ function loopLeft (ele, x, y) {
             console.log(left)
             arr[y][x] = 0;
             arr[y][_x] = ele;
+            $(`#${y}${x}`).text('.');
+            $(`#${y}${_x}`).text(ele);
+            
+            _move = true;
             loopLeft(ele, _x, y);
         } else {
             console.log(ele, left)
@@ -200,17 +250,15 @@ function loopLeft (ele, x, y) {
                 console.log('am')
                 arr[y][x] = 0;
                 arr[y][_x] = ele * 2;
+                $(`#${y}${x}`).text('.');
+                $(`#${y}${_x}`).text(ele*2);
+                
+                _move = true;
                 _m  = true;
             }
         }
     }
 }
 init();
-placeNewDigit();
-console.log(arrr());
-// swapUp();
-swapRight()
-swapDown()
-console.log(arrr());
 // swapDown();
 // console.log(arr);
