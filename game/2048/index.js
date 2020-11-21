@@ -1,6 +1,6 @@
 const arr = [];
-const w = 4;
-const h = 4;
+const w = 5;
+const h = 5;
 
 for (let y = 0; y < h; y++) {
     arr.push([]);
