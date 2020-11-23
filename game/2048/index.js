@@ -1,8 +1,7 @@
 const arr = [];
 const w = 5;
-const h = 5;
 
-for (let y = 0; y < h; y++) {
+for (let y = 0; y < w; y++) {
     arr.push([]);
     for (let x = 0; x< w; x++) {
         arr[y][x] = 0;
@@ -68,7 +67,7 @@ let _move = false;
 function swapUp () {
     for(let x = 0; x < w; x++) {
         _m = false;
-        for (let y = 1; y < h; y++) {
+        for (let y = 1; y < w; y++) {
             let ele = arr[y][x];
             if (ele === 0) {
                 continue;
@@ -85,7 +84,7 @@ function swapUp () {
 function swapDown () {
     for(let x = 0; x < w; x++) {
         _m = false;
-        for (let y = h-2; y >= 0; y--) {
+        for (let y = w-2; y >= 0; y--) {
             let ele = arr[y][x];
             if (ele === 0) {
                 continue;
@@ -101,7 +100,7 @@ function swapDown () {
 }
 
 function swapLeft () {
-    for(let y = 0; y < h; y++) {
+    for(let y = 0; y < w; y++) {
         _m = false;
         for (let x = 1; x < w; x++) {
             let ele = arr[y][x];
@@ -119,7 +118,7 @@ function swapLeft () {
 }
 
 function swapRight () {
-    for(let y = 0; y < h; y++) {
+    for(let y = 0; y < w; y++) {
         _m = false;
         for (let x = w - 1; x >= 0; x--) {
             let ele = arr[y][x];
@@ -175,7 +174,7 @@ function loopUp (ele, x, y) {
 }
 
 function loopDown (ele, x, y) {
-    if (y < h - 1 && ele > 0) {
+    if (y < w - 1 && ele > 0) {
         let _y = y + 1;
         let down = arr[_y][x];
         if (down === 0) {
