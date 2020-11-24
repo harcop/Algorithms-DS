@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="">
+<head>
+    <meta charset="UTF-8">
+    <title>Untitled Document</title>
+	<meta name="Author" content=""/>
+    <style>
+        .box {
+            background: red !important;
+            width: 30px;
+            height: 30px;
+            border: solid red 2px;
+            display: inline-block;
+            margin-left: 1px;
+            margin-top: 2px;
+            color: white;
+        }
+        .box-h {
+            background: red !important;
+            color: red
+        }
+        .free {
+            background: red;
+        }
+        .bomb {
+            background: black;
+        }
+        .txt-holder {
+            display: grid;
+            justify-content: center;
+            align-items: center;
+            align-content: center;
+            height: 100%
+        }
+        .flag {
+            background: yellow !important
+        }
+    </style>
+</head>
+<body>
+
+    <div class="parent"></div>
+
+    <script src="../js/jquery.js"></script>
+    
+    
+    <script>
+        $(document).ready(function () {
+            var _size = 10;
+            var _sizeq = _size*_size;
+            var _size_b = _size-1;
+            var _grid = [];
+            var _bombs = [];
+            
+            //setup
+            for(let y = 0; y <_size; y++) {
+                for(let x =0; x< _size; x++) {
+                    let box = new Box(x, y);
+                    _grid.push(box);
+                }
+            }
+            
+            //place bomb
+            while (_bombs.length < 10) {
+                let rnd = Math.floor(Math.random() * (_sizeq-1)) + 1;
+                if (!_bombs.includes(_grid[rnd])) {
+                    _grid[rnd].bomb = true;
+                    _bombs.push(_grid[rnd]);
+                }
+            }
+            
+            //add counter
+            for(let bomb of _bombs) {
+                addOneToNeigh(bomb);
+            }
+            
+            for(let j = 0; j < _size; j++) {
+                for(let i = 0; i < _size; i++) {
+                    let _1d = i + _size * j;
+                    let box = _grid[_1d]
+                    let x = box.x
+                    let y = box.y
+                    let txt = box.counter;
+                    if (box.bomb) {
+                        $('.parent').append(`<div id="box-${x}-${y}" class="box box-h bomb"><div class="txt-holder">${txt}<div></div>`);
+                        continue;
+                    }
+                    $('.parent').append(`<div id="box-${x}-${y}" class="box box-h free"><div class="txt-holder">${txt}<div></div>`);
+                }
+                $('.parent').append('<br/>')
+            }
+            
+            $('.box').click(function () {
+                let _id = $(this)[0].id.split("-");
+                let x = parseInt(_id[1]);
+                let y = parseInt(_id[2]);
+                let _gp = x + _size*y;
+                let box = _grid[_gp];
+                if (!box.bomb) {
+                    $(this).removeClass("box-h");
+                    box.visited = true;
+                    if (box.counter === 0) {
+                        unlocker(box); // Todo
+                    }
+                    return;
+                }
+                alert('game over');
+            })
+            
+            function boxBorderRadius() {
+                $(`#box-0-0`).css("border-top-left-radius", "5px")
+                $(`#box-0-${_size_b}`).css("border-bottom-left-radius", "5px")
+                $(`#box-${_size_b}-0`).css("border-top-right-radius", "5px")
+                $(`#box-${_size_b}-${_size_b}`).css("border-bottom-right-radius", "5px")
+            }
+            boxBorderRadius();
+            
+            function unlocker(box) {
+                let neigh = getNeigh(box);
+                for (let _n of neigh) {
+                    let _gp = _n.x + _size * _n.y;
+                    let _nb = _grid[_gp];
+                    $(`#box-${_n.x}-${_n.y}`).removeClass("box-h");
+                    if (_nb.counter === 0 && _nb.visited === false) {
+                        _nb.visited = true;
+                        unlocker(_nb);
+                    }
+                    _nb.visited = true;
+                }
+            }
+            
+            
+            
+            function addOneToNeigh(bomb) {
+                let neigh = getNeigh(bomb);
+                for (const _n of neigh) {     
+                    let _1d = _n.x + (_size_b+1) * _n.y;
+                    _grid[_1d].counter++;
+                }
+            }
+            
+            function getNeigh(box) {
+                let x = box.x;
+                let y = box.y;
+                let neigh = [];
+
+                if (y > 0) {
+                    let up = {
+                        x: x,
+                        y: y-1
+                    }
+                    neigh.push(up);
+                }
+                if (x < _size_b && y > 0) {
+                    let ue = {
+                        x: x+1,
+                        y: y-1
+                    }
+                    neigh.push(ue);
+                }
+                if (x < _size_b) {
+                    let r = {
+                        x: x+1,
+                        y: y
+                    }
+                    neigh.push(r);
+                }
+                if (x < _size_b && y < _size_b) {
+                    let de = {
+                        x: x+1,
+                        y: y+1
+                    }
+                    neigh.push(de);
+                }
+                if (y < _size_b) {
+                    let d = {
+                        x: x,
+                        y: y+1
+                    }
+                    neigh.push(d);
+                }
+                if (x > 0 && y < _size_b) {
+                    let dw = {
+                        x: x-1,
+                        y: y+1
+                    }
+                    neigh.push(dw);
+                }
+                if (x > 0) {
+                    let l = {
+                        x: x-1,
+                        y: y
+                    }
+                    neigh.push(l);
+                }
+                if (x > 0 && y > 0) {
+                    let uw = {
+                        x: x-1,
+                        y: y-1
+                    }
+                    neigh.push(uw);
+                }
+                return neigh;
+            }
+        })  
+        
+        
+        
+        
+        function Box(x, y) {
+            this.x = x;
+            this.y = y;
+            this.bomb = false;
+            this.flag = false;
+            this.counter = 0;
+            this.visited = false;
+        }
+    </script>
+</body>
+</html>
