@@ -5,7 +5,7 @@ for (let y = 0; y < w; y++) {
     arr.push([]);
     for (let x = 0; x< w; x++) {
         arr[y][x] = 0;
-        $('#gridBox').append(`<div class="smallBox" id="${y}${x}"> .</div>`);
+        $('#gridBox').append(`<div class="smallBox" id="${y}${x}">.</div>`);
     }
     $('#gridBox').append('<br/>');
 }
