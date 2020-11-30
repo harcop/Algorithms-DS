@@ -12,19 +12,39 @@ for (let y = 0; y < w; y++) {
     // $('#gridBox').append('<br/>');
     pos.push([..._g]);
 }
-// console.log(pos)
+console.log(pos)
 // console.log(arr)
 
 for(let i = 1; i < 10; i++) {
     const _pos = [1,2,3,4,5,6,7,8,9];
-    for(let j = 0; j < arr.length; j++) {
-        // console.log(i, j, pos[j])
-        const _r = randBtw(..._pos);
+    let _v = [];
+    for(let j = 0; j < 6; j++) {
+        console.log(i, j, pos[5])
+        let _r = randBtw(...pos[j]);
+        let falser = true;
         console.log(_r);
-        arr[j][_r] = i;
-        _pos.splice(_pos.indexOf(_r), 1);
-        console.log(_pos);
+        let _fake = [];
+        while (falser) {
+            if (!_v.includes(_r)) {
+                console.log(_r)
+                break;
+            }
+            console.log(_v);
+            console.log(_r);
+            _fake.push(_r);
+            console.log(pos[j]);
+            pos[j].splice(pos[j].indexOf(_r), 1);
+            console.log(pos[j]);
+            _r = randBtw(...pos[j]);
+        }
+        pos[j].push(..._fake);
+        arr[j][_r-1] = i;
+        pos[j].splice(pos[j].indexOf(_r), 1);
+        _v.push(_r);
+        // console.log(pos);
     }
+    console.log(arr);
+    console.log(_v)
 }
 
 console.log(arr);
