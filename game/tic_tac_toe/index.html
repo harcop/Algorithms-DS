@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>2048</title>
+</head>
+<style>
+    #gridBox {
+        background-color:yellow;
+        display: inline-block;
+        padding: 5px;
+    }
+    .smallBox {
+        display: inline-block;
+        width: 20px;
+        height: 20px;
+        padding: 3px;
+        margin:2px;
+        background-color: grey;
+        color: white;
+        border-radius: 3px;
+        text-align: center;
+    }
+</style>
+<body>
+    <div class="main">
+        <!-- 3 * 3 grid here -->
+        <div id="gridBox">
+
+        </div>
+    </div>
+    <script src="../js/jquery.js"></script>
+    <script src="./index.js"></script>
+
+    <script>
+        $(document).ready(function () {
+            $(".smallBox").click(function () {
+                const position = $(this)[0]['id'];
+                humanShouldPlay(parseInt(position));
+            })
+        })
+    </script>
+</body>
+</html>
