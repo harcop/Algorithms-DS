@@ -1,10 +1,19 @@
-const arr = [
-    [0,0,0,],
-    [0,0,0,],
-    [0,0,0,],
-];
+const arr = [];
+const  w = 3;
 let gridPos = [0,1,2,3,4,5,6,7,8];
 let winner = "-1";
+let cp = 1; //current player;
+
+let _c = 0;
+for (let y = 0; y < w; y++) {
+    arr.push([]);
+    for (let x = 0; x< w; x++) {
+        arr[y][x] = 0;
+        $('#gridBox').append(`<div class="smallBox" id="${_c}">.</div>`);
+        _c += 1;
+    }
+    $('#gridBox').append('<br/>');
+}
 
 function play({x, y, player}) {
     if (player === 1) {
@@ -37,6 +46,52 @@ function cPlayers() {
         }
     }
 }
+
+function computerPlayer() {
+    let rnd = pick();
+    let y = Math.floor(rnd / 3);
+    let x = Math.floor(rnd % 3);
+    console.log(rnd);
+    if (arr[y][x] === 0) {
+        $(`#${rnd}`).text('X');
+        play({x, y, player: 2});
+        return true;
+    }
+    return false;
+}
+
+function humanPlayer(position) {
+    let y = Math.floor(position / 3);
+    let x = Math.floor(position % 3);
+    if (arr[y][x] === 0) {
+        play({x, y, player: 1});
+        gridPos.splice(gridPos.indexOf(position), 1);
+        return true;
+    }
+    return false;
+}
+
+function ComputerOpponent() {
+    let space = true;
+    let _s = checkSpace();
+    if (!_s) {
+        return;
+    }
+    let wins = checkWinner()
+    if (wins) {
+        return;
+    }
+    computerPlayer();
+}
+
+function humanShouldPlay(position) {
+    let _p = humanPlayer(position);
+    if (_p) {
+        $(`#${position}`).text('O');
+        ComputerOpponent();
+    }
+}
+
 
 function checkSpace() {
     let z = 0;
@@ -96,6 +151,13 @@ function checkWinner() {
     if (winner === "-1") {
         return false;
     }
+    else {
+        if (winner === "X") {
+            alert("X wins")
+        }else {
+            alert("O wins")
+        }
+    }
     return true;
 }
 
@@ -125,6 +187,6 @@ function print(){
     }
     console.log(_f);
 }
-cPlayers();
+
 // console.log(arr);
-print();
+//print();
