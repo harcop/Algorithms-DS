@@ -16,37 +16,34 @@ console.log(pos)
 // console.log(arr)
 
 for(let i = 1; i < 10; i++) {
-    const _pos = [1,2,3,4,5,6,7,8,9];
-    let _v = [];
-    for(let j = 0; j < 6; j++) {
-        console.log(i, j, pos[5])
-        let _r = randBtw(...pos[j]);
-        let falser = true;
-        console.log(_r);
-        let _fake = [];
-        while (falser) {
-            if (!_v.includes(_r)) {
-                console.log(_r)
-                break;
-            }
-            console.log(_v);
-            console.log(_r);
-            _fake.push(_r);
-            console.log(pos[j]);
-            pos[j].splice(pos[j].indexOf(_r), 1);
-            console.log(pos[j]);
-            _r = randBtw(...pos[j]);
-        }
-        pos[j].push(..._fake);
-        arr[j][_r-1] = i;
-        pos[j].splice(pos[j].indexOf(_r), 1);
+    // const _pos = [1,2,3,4,5,6,7,8,9];
+    const _v = [];
+    for(let j = 0; j < arr.length; j++) {
+        // console.log(i, j, pos[5])
+        const _x = pos[j];
+        const _visitedBefore = removeVisited(_v, _x);
+        let _r = randBtw(..._x);
         _v.push(_r);
+        console.log(_r, _x);
+        arr[j][_r-1] = i;
+        _x.splice(_x.indexOf(_r), 1);
+        _x.push(..._visitedBefore);
         // console.log(pos);
     }
     console.log(arr);
     console.log(_v)
 }
 
+function removeVisited(_v, _x) {
+    let _f = [];
+    for (let v of _v) {
+        if(_x.includes(v)) {
+            _f.push(v);
+            _x.splice(_x.indexOf(v), 1);
+        }
+    }
+    return _f;
+}
 console.log(arr);
 
 
