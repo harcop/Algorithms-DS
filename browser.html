@@ -1,73 +1,55 @@
 <!DOCTYPE html>
 <html lang="">
-
 <head>
     <meta charset="UTF-8">
     <title>Untitled Document</title>
-    <meta name="Author" content="" />
-    <link rel="stylesheet" type="text/css" href="style.css">
+	<meta name="Author" content=""/>
     <style>
-        body > .code {
-            display: none
+        .main div {
+            display: inline-block
+        }
+        .code-hide {
+            display: none;
         }
     </style>
 </head>
-
 <body>
-    <div class="code">
-        <!DOCTYPE html>
-        <html>
 
-        <head>
-            <style>
-                .city {
-                    background-color: tomato;
-                    color: white;
-                    border: 2px solid black;
-                    margin: 20px;
-                    padding: 20px;
-                }
 
-            </style>
-        </head>
-
-        <body>
-
-            <div class="city">
-                <h2>London</h2>
-                <p>London is the capital of England.</p>
+    <div class="main">
+        <div class="code-area">
+            <textarea class="code-body">
+                
+                <html>
+                    <head>
+                <style>
+                        p {
+                        color: red
+                        }
+                        </style></head>
+                    <body>
+                        <p>Hello</p></body>
+                </html>
+            </textarea>
+            <div class="code-hide">
             </div>
-
-            <div class="city">
-                <h2>Paris</h2>
-                <p>Paris is the capital of France.</p>
-            </div>
-
-            <div class="city">
-                <h2>Tokyo</h2>
-                <p>Tokyo is the capital of Japan.</p>
-            </div>
-
-        </body>
-
-        </html>
-
-    </div>
-    <div>
-        <div class="coder">
-
+        </div>
+        <div>
+            <button onclick="preview()">Run</button>
+        </div>
+        <div class="preview-area">
         </div>
     </div>
 
     <script>
-        let g = document.getElementsByClassName('code');
-        let frame = document.getElementsByClassName('coder');
-        frame[0].innerHTML = g[0].outerHTML;
-        console.log(g)
-        console.log(frame[0], 'hacker')
-
+        preview()
+        function preview() {
+            const codeBody = document.getElementsByClassName('code-body');
+            const codeHide = document.getElementsByClassName('code-hide');
+            const previewArea = document.getElementsByClassName('previewArea');
+            codeHide[0].innerHTML = codeBody[0].value
+            previewArea[0].innerHTML = codeHide.outerHTML
+        }
     </script>
-
 </body>
-
 </html>
