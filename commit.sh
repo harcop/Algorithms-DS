@@ -1,3 +1,3 @@
 git add .
-git commit -m "feat(): add aladdin carpet"; 
+git commit -m "feat(): forex date calculation"; 
 git push
