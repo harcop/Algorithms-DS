@@ -2,14 +2,14 @@ const fs = require('fs');
 const { transpiler } = require('./transpiler');
 const { exec } = require('child_process');
 
-let code = `function namer() { 
-    sorosoke.werey('endsar'); 
-} 
-namer();`;
+let code = `function printer() { 
+\t print.out('hey this is a word'); 
+}
+printer();`;
 code = transpiler(code);
-fs.writeFileSync("./zcode.js", code);
+fs.writeFileSync("./exec/code.js", code);
 
-exec("node zcode", (error, stderr, stdout) => {
+exec("node ./exec/code.js", (error, stdout, stderr) => {
     if (error) {
         console.log(`error: ${error.message}`);
         return;
