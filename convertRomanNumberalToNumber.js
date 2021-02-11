@@ -39,4 +39,6 @@ function digit(val) {
     return roman[val];
 }
 
+
 console.log(converter('MCVII'))
+console.log(converter('X'))
