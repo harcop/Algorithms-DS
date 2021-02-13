@@ -1,5 +1,6 @@
 // 54386791
 const arr = [5,4,3,8,6,7,9,1];
+
 function selection () {
     let i = 0;
     while(i < arr.length) {
