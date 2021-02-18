@@ -46,15 +46,15 @@ function sort(arr, l, r) {
     if (l >= r) {
         return;
     }
-    let m = l + (r-l)/2;
+    let m = Math.floor(l + (r-l)/2);
     sort(arr, l, m);
     sort(arr, m+1, r);
     mergeSort(arr, l, m, r);
 }
 
-function main() {
-    sort(arr, 0, arr.length -1);
-    // return arr;
+function main(arr) {
+    sort(arr, 0, arr.length - 1);
+    return arr;
 }
 
-console.log(main());
+console.log(main(arr));
