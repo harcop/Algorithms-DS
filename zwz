@@ -1,0 +1,29 @@
+take a subject and fetch it 
+
+split by <section>
+pick the first one
+split by </section>
+pick the first one
+1 split by <div class="question">
+remove the first and last from the array
+for each of the element
+2 split by <div class="row question-images-wrapper">
+</div>
+pick the first element and 
+3 split <span class="question-number">
+pick the first one
+split by </span>
+pick the first element as question number
+return the send split
+4 split by </p></p></p></p></p></p></p></p></p></p>
+</div>
+pick the first one as the question body
+for Each element in the array
+5 split by <div class="question-option-wrapper"><span class="question-option">
+6 pick the first element and 
+split by </span> and 
+7 pick the first for option alphabet and the second for option body
+go back to the 3 split and 
+8 split by <p><strong>Correct Option:</strong>
+split by </p>
+pick the first one
