@@ -1,12 +1,12 @@
 /**
- * @param {string} s
+ * @param {string} str
  * @return {number}
  */
-var lengthOfLongestSubstring = function(s) {
+const lengthOfLongestSubstring = function(str) {
     let arr = [];
     let max = 0;
-    for(let i= 0; i < s.length; i++) {
-        let val = s[i];
+    for(const s of str) {
+        let val = s;
         if(arr.includes(val)) {
            let idx = arr.indexOf(val) + 1;
             arr = arr.slice(idx);
