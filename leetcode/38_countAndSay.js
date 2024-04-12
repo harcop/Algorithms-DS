@@ -22,13 +22,10 @@ function cns(n) {
 function say(val) {
   let vv = String(val)
     const s = [];
-    let currentV = '';
+    let currentV = vv[0];
     let currentCount = 0;
     for(let i = 0; i < vv.length; i++) {
         let v = vv[i];
-        if(currentV === '') {
-            currentV = v
-        }
         if(currentV === v) {
             currentCount += 1;
             if(vv[i + 1] !== v) {
