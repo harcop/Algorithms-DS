@@ -4,13 +4,21 @@
  */
 const rotate = function(matrix) {
     let innerLength = matrix[0].length;
-    for(let i = 1; i < innerLength; i++) {
-        for(let j = 0; j < innerLength; j++) {
+    let stage = innerLength;
+    let swap = [];
+    for(let i = 0; i < innerLength; i++) {
+      stage--
+      for(let j = 0; j < innerLength; j++) {
+          if(!swap.includes(`${i}-${j}`)) {
             let ele = matrix[i][j];
-            matrix[0][j] = `${ele}-${matrix[0][j]}`
-        }
+            let temp = matrix[j][stage];
+            matrix[i][j] = temp;
+            matrix[j][stage] = ele;
+            swap.push(`${j}-${stage}`)
+          }
+      }
     }
-    return matrix.splice(0, 1).map(ele => ele.map(item => item.split('-').map(s => Number(s))))[0]
+    return matrix
 };
 
 console.log(rotate([[1,2,3],[4,5,6],[7,8,9]]))
