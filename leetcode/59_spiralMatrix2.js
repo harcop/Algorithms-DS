@@ -1,28 +1,42 @@
-/**
- * @param {number} n
- * @return {number[][]}
- */
-var generateMatrix = function(n) {
-    const arr = [];
-    for(let i = 1; i <= n * n; i++) {
-        arr.push(i)
+var generateMatrix = function(n) { 
+    // n = 3
+    // create empty 3 x 3 array
+    const result = new Array(n).fill(0).map(x => []);
+    console.log(result)
+
+
+    let counter = 0;
+    let first = 0;
+    let last = n-1;
+
+    // 0 -> till ceil(3/2) = 2 = 3 loops
+    for (let i = 0; i < Math.ceil(n/2); i++) {
+      // 0 -> 2
+        for(let j = first; j <= last; j++)
+            // [[1, 2, 3], [], []]
+            result[first][j] = ++counter
+
+            // 1 -> 2
+        for(let j = first+1; j <= last; j++)
+          // [[1, 2, 3], [0,0,4], [0,0,5]]
+            result[j][last] = ++counter
+
+            // 1 -> 0
+        for(let j = last-1; j >= first; j--)
+          // [[1, 2, 3], [0,0,4], [7,6,5]]
+            result[last][j] = ++counter
+
+            // 1 -> 0
+        for(let j = last-1; j >= first+1; j--)
+          // [[1, 2, 3], [8,9,4], [7,6,5]]
+            result[j][first] = ++counter
+
+        first++
+        last--
     }
-    const res = [];
-    while(arr.length) {
-      let nn = arr.splice(0, n)
-      res.push(nn)
-      if(arr.length) {
-        let newArr = [arr.shift()];
-        arr.reverse();
-        while(newArr.length < n) {
-            newArr.unshift(arr.shift())
-        }
-        res.push(newArr)
-      }
-    }
-    return res
+
+    return result;
 };
-console.log(generateMatrix([1, 2, 3, 0, 9, 8, 7, 4, 5], 3))
-console.log(generateMatrix([1, 2, 3, 4, 5, 6, 7, 8, 9], 3))
-console.log(generateMatrix([1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16], 4))
-console.log(generateMatrix([1], 1))
+
+console.log(generateMatrix(3))
+console.log(generateMatrix(4))
