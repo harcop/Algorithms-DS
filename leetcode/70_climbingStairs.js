@@ -25,47 +25,72 @@
  */
 var climbStairs = function(n) {
     let arr = [[1]]
-    let temp = ['1']
     if(n === 1) {
       return 1
     }
     let j = 2;
     while(j <= n) {
-      mov(arr, temp)
+      mov(arr)
       j++
     }
-    console.log(arr)
-    return arr.length - 1
+    let nn = [];
+    for(let a of arr) {
+      const cc = a.reduce((el, cv) => el + cv)
+      if(cc === n && !nn.includes(a.join(''))) {
+        nn.push(a.join(''))
+      }
+    }
+    console.log(nn)
+    return nn.length
 };
 
-function mov(arr, temp) {
+function mov(arr) {
   let tempArr = [...arr]
   for(let ele of tempArr) {
     arr.push([1, ...ele])
-    console.log(arr)
-    temp.push([1, ...ele].join(''))
-
-    let jj = temp[0]
-    if(!temp.includes(jj)) {
-      arr.push([...ele, 1])
-      temp.push([...ele, 1].join(''))
-    }
+    arr.push([...ele, 1])
     for(let i = 0; i < ele.length; i++) {
       let tempEle = [...ele];
       if(tempEle[i] === 1) {
         tempEle[i] += 1;
-        jj = [...tempEle].join('')
-        console.log(jj)
-        console.log(temp)
-        if(!temp.includes(jj)) {
-          console.log(temp)
-          arr.push(tempEle)
-        }
+        arr.push(tempEle)
       }
     }
   }
 }
 
+// use fibonacci sequence
+function fib(n) {
+  if(n <= 1) {
+    return 1
+  }
+  return fib(n-1) + fib(n-2)
+}
+
+// use fibonacci sequence memoization
+function fibMem(n) {
+  if(n <= 1) {
+    return 1
+  }
+  let arr = [1, 1]
+  let i = 2;
+  while(i <= n) {
+    arr.push(arr[0]+arr[1]);
+    arr.shift()
+    i++
+  }
+  return arr[1]
+}
+
+console.log(fibMem(1))
+console.log(fibMem(2))
+console.log(fibMem(3))
+console.log(fibMem(4))
+console.log(fibMem(5))
+
 // console.log(climbStairs(1))
-console.log(climbStairs(2))
+// console.log(climbStairs(2))
 // console.log(climbStairs(3))
+// console.log(climbStairs(4))
+console.log(climbStairs(5))
+console.log(climbStairs(6))
