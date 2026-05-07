@@ -1,9 +1,9 @@
 /// LeetCode #461 - Hamming Distance
-fn hamming_distance(x: i32, y: i32) -> i32 {
-    let mut z = (x as u32) ^ (y as u32);
+fn hamming_distance(mut x: i32, mut y: i32) -> i32 {
+    let mut z = x ^ y;
     let mut c = 0;
     while z != 0 {
-        c += (z & 1) as i32;
+        c += z & 1;
         z >>= 1;
     }
     c
