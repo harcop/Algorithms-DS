@@ -7,7 +7,7 @@ fn frequency_sort(s: String) -> String {
         *m.entry(ch).or_insert(0usize) += 1;
     }
     let mut v: Vec<(char, usize)> = m.into_iter().collect();
-    v.sort_by(|a, b| b.1.cmp(&a.1).then_with(|| a.0.cmp(&b.0)));
+    v.sort_by(|a, b| b.1.cmp(&a.1));
     let mut out = String::new();
     for (ch, c) in v {
         for _ in 0..c {
