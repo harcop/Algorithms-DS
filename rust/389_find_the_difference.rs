@@ -1,16 +1,12 @@
-/// LeetCode #389 - Find The Difference (placeholder)
-pub const NOTE: &str = "Solution placeholder; implement as needed.";
-
-fn main() {
-    println!("{}", NOTE.len());
+/// LeetCode #389 - Find the Difference (XOR)
+fn find_the_difference(s: String, t: String) -> char {
+    let mut x = 0u8;
+    for b in s.bytes().chain(t.bytes()) { x ^= b; }
+    x as char
 }
 
-#[cfg(test)]
-mod tests {
-    use super::NOTE;
+fn main() { println!("{}", find_the_difference("abcd".into(), "abcde".into())); }
 
-    #[test]
-    fn note_non_empty() {
-        assert!(!NOTE.is_empty());
-    }
+#[cfg(test)] mod tests { use super::*;
+    #[test] fn smoke(){ assert_eq!(find_the_difference("".into(), "y".into()), 'y'); }
 }
