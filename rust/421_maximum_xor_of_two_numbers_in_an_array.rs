@@ -38,12 +38,10 @@ impl Trie {
 
 fn find_maximum_xor(nums: Vec<i32>) -> i32 {
     let mut t = Trie::new();
-    for &x in &nums {
-        t.insert(x);
-    }
     let mut best = 0;
     for x in nums {
         best = best.max(t.best_xor(x));
+        t.insert(x);
     }
     best
 }
