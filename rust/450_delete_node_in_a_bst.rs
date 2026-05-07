@@ -6,14 +6,6 @@ pub struct TreeNode {
     pub right: Option<Box<TreeNode>>,
 }
 
-fn min_tree_val(root: &TreeNode) -> i32 {
-    let mut cur = root;
-    while let Some(ref l) = cur.left {
-        cur = l;
-    }
-    cur.val
-}
-
 fn delete_node(mut root: Option<Box<TreeNode>>, key: i32) -> Option<Box<TreeNode>> {
     match root.take() {
         None => None,
@@ -31,9 +23,12 @@ fn delete_node(mut root: Option<Box<TreeNode>>, key: i32) -> Option<Box<TreeNode
                 if n.right.is_none() {
                     return n.left;
                 }
-                let succ_val = min_tree_val(n.right.as_ref().unwrap());
-                n.val = succ_val;
-                n.right = delete_node(n.right.take(), succ_val);
+                let mut succ = n.right.take().unwrap();
+                while succ.left.is_some() {
+                    succ = succ.left.take().unwrap();
+                }
+                n.val = succ.val;
+                n.right = delete_node(n.right.take(), succ.val);
                 Some(n)
             }
         }
