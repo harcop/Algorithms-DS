@@ -14,7 +14,7 @@ fn score_of_parentheses(s: String) -> i32 {
 }
 
 fn main() {
-    println!("{}", score_of_parentheses("(()".into()));
+    println!("{}", score_of_parentheses("(())".into()));
 }
 
 #[cfg(test)]
@@ -23,7 +23,7 @@ mod tests {
 
     #[test]
     fn example_one() {
-        assert_eq!(score_of_parentheses("(()".into()), 2);
+        assert_eq!(score_of_parentheses("(())".into()), 2);
     }
 
     #[test]
