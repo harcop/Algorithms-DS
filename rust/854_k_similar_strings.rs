@@ -14,7 +14,7 @@ fn k_similarity(s1: String, s2: String) -> i32 {
         let sz = q.len();
         for _ in 0..sz {
             let cur = q.pop_front().unwrap();
-            let b = cur.as_bytes();
+            let b = cur.as_bytes().to_vec();
             let t = target.as_bytes();
             let mut i = 0;
             while i < b.len() && b[i] == t[i] {
@@ -22,7 +22,7 @@ fn k_similarity(s1: String, s2: String) -> i32 {
             }
             for j in i + 1..b.len() {
                 if b[j] == t[i] {
-                    let mut bytes = cur.into_bytes();
+                    let mut bytes = b.clone();
                     bytes.swap(i, j);
                     let nb = String::from_utf8(bytes).unwrap();
                     if nb == target {
