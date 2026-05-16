@@ -20,16 +20,20 @@ fn num_similar_groups(strs: Vec<String>) -> i32 {
     }
 
     fn similar(a: &[u8], b: &[u8]) -> bool {
-        let mut diff = 0;
-        for i in 0..a.len() {
-            if a[i] != b[i] {
-                diff += 1;
-                if diff > 2 {
-                    return false;
+        if a == b {
+            return true;
+        }
+        let n = a.len();
+        for i in 0..n {
+            for j in i + 1..n {
+                let mut x = a.to_vec();
+                x.swap(i, j);
+                if x == b {
+                    return true;
                 }
             }
         }
-        diff == 2 || diff == 0
+        false
     }
 
     for i in 0..n {
@@ -61,7 +65,7 @@ mod tests {
     fn example_one() {
         assert_eq!(
             num_similar_groups(vec!["tars".into(), "rats".into(), "arts".into(), "star".into()]),
-            1
+            2
         );
     }
 }
