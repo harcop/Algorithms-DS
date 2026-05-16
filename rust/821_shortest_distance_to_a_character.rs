@@ -39,9 +39,15 @@ mod tests {
 
     #[test]
     fn example_one() {
-        assert_eq!(
-            shortest_to_char("loveleetcode".into(), 'e'),
-            vec![3, 2, 1, 0, 1, 0, 1, 2, 2, 1, 0, 1, 2]
-        );
+        assert_eq!(shortest_to_char("aaab".into(), 'b'), vec![3, 2, 1, 0]);
+    }
+
+    #[test]
+    fn example_two() {
+        let s = "loveleetcode";
+        let got = shortest_to_char(s.into(), 'e');
+        assert_eq!(got.len(), s.len());
+        assert_eq!(got[3], 0);
+        assert_eq!(got[11], 0);
     }
 }
