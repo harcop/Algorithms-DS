@@ -8,16 +8,6 @@ pub struct TreeNode {
     pub right: Option<Rc<TreeNode>>,
 }
 
-impl TreeNode {
-    fn new(val: i32) -> Self {
-        TreeNode {
-            val,
-            left: None,
-            right: None,
-        }
-    }
-}
-
 fn subtree_with_all_deepest(root: Option<Rc<TreeNode>>) -> Option<Rc<TreeNode>> {
     fn dfs(node: Option<Rc<TreeNode>>) -> (i32, Option<Rc<TreeNode>>) {
         match node {
@@ -47,17 +37,23 @@ mod tests {
     use super::{subtree_with_all_deepest, TreeNode};
     use std::rc::Rc;
 
+    fn node(val: i32, left: Option<Rc<TreeNode>>, right: Option<Rc<TreeNode>>) -> Rc<TreeNode> {
+        Rc::new(TreeNode { val, left, right })
+    }
+
     #[test]
     fn example_one() {
-        let mut two = Rc::new(TreeNode::new(2));
-        two.left = Some(Rc::new(TreeNode::new(7)));
-        two.right = Some(Rc::new(TreeNode::new(4)));
-        let mut five = Rc::new(TreeNode::new(5));
-        five.left = Some(Rc::new(TreeNode::new(6)));
-        five.right = Some(two);
-        let mut root = Rc::new(TreeNode::new(3));
-        root.left = Some(five);
-        root.right = Some(Rc::new(TreeNode::new(1)));
+        let two = node(
+            2,
+            Some(node(7, None, None)),
+            Some(node(4, None, None)),
+        );
+        let five = node(
+            5,
+            Some(node(6, None, None)),
+            Some(two),
+        );
+        let root = node(3, Some(five), Some(node(1, None, None)));
         let ans = subtree_with_all_deepest(Some(root));
         assert_eq!(ans.unwrap().val, 2);
     }
