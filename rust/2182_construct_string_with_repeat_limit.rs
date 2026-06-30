@@ -44,7 +44,7 @@ mod tests {
 
     #[test]
     fn example_one() {
-        assert_eq!(repeat_limited_string("cczazcc".into(), 3), "zzccc");
+        assert_eq!(repeat_limited_string("cczazcc".into(), 3), "zzcccac");
     }
 
     #[test]
