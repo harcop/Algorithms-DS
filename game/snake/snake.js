@@ -1,211 +1,136 @@
-var w = 40;
-var rows, cols
-var grids = [];
-var pos = Math.floor(Math.random() * 10) + 1;
+(function () {
+    var canvas = document.getElementById('board');
+    var ctx = canvas.getContext('2d');
+    var scoreEl = document.getElementById('score');
+    var statusEl = document.getElementById('status');
+    var TILE = 20;
+    var COLS = canvas.width / TILE;
+    var ROWS = canvas.height / TILE;
+    var snake, dir, queued, food, score, alive, timer;
 
-var dir = 'down';
-var path = [10, 11, 12];
-var road = [];
-var snake = null;
-function setup() {
-    createCanvas(400, 400);
-    rows = floor(height/w);
-    cols = floor(width/w);
-    
-    for(let y = 0; y < rows; y++) {
-        for(let x = 0; x < cols; x++) {
-            let ceil = new Ceil(x, y);
-            grids.push(ceil);
-        }
+    function rand(n) {
+        return Math.floor(Math.random() * n);
     }
-    snake = new Snake();
-    snake.append(15);
-    console.log(snake);
-}
 
-function draw() {
-    background(33, 56, 89); 
-    for (let i = 0; i < grids.length; i++) {
-        grids[i].show();
-    }
-    grids[pos].fruit();
-    snake.move();
-//    console.log(snake) 
-    frameRate(10);
-}
-
-function keyPressed () {
-    if (keyCode === UP_ARROW) {
-        if (dir === 'right' ||  dir === 'left') {
-            dir = 'up';
-        }
-    }
-    else if (keyCode === DOWN_ARROW) {
-        if (dir === 'right' ||  dir === 'left') {
-            dir = 'down';
-        }
-    }
-    else if (keyCode === RIGHT_ARROW) {
-        if (dir === 'up' ||  dir === 'down') {
-            dir = 'right';
-        }
-    }
-    else if (keyCode === LEFT_ARROW) {
-        if (dir === 'up' ||  dir === 'down') {
-            dir = 'left';
-        }
-    }
-}
-
-function Ceil(i, j) {
-    this.x = i;
-    this.y = j;
-    this.isPaint = false;
-    
-    var x = this.x*w;
-    var y = this.y*w;
-    this.show = function () {
-        stroke(200);
-        fill(233,231,233);
-        rect(x,y,w,w);
-    }
-    
-    this.paint = function () {
-        fill(0,231,233);
-        rect(x,y,w,w);
-    }
-    
-    this.fruit = function () {
-        this.isPaint = true;
-        fill(40,40,43);
-        rect(x,y,w,w);
-    }
-}
-
-function Snake() {
-    this.head = null;
-    this.tail = null;
-    
-    this.append = function (value) {
-        const node = new Node(value);
-        let current = this.head;
-        if (current === null) {
-            this.head = node;
-            this.tail = node;
-        }
-        else {
-            current = this.tail;
-            current.previous = node;
-            node.next = current;
-            this.tail = node;
-        }
-        return this;
-    }
-    
-    this.move = function () {
-        let current = this.head;
-        while (current !== null) {
-            let value = current.value;
-            grids[value].paint();
-            if (current.next === null) {
-////                
-                let gps = this.traverse();
-                if (gps.includes(value)) {
-                    this.empty();
-                }
-                
-                let appender = false;
-                let tail = this.tail.value;
-                if (value === pos) {
-                    appender = true;
-                }
-                if (dir === 'right') {
-                    if (appender) {
-                        this.append(tail-1);
-                    }
-                    if (grids[value].x === rows - 1){
-                        current.value -= rows -1;
-                    }else {
-                        current.value += 1; 
-                    }
-                }
-                else if (dir === 'left') {
-                    if (appender) {
-                        this.append(tail+1);
-                    }
-                    if (grids[value].x === 0){
-                        current.value += rows -1;
-                    }else {
-                        current.value -= 1; 
-                    }
-                }
-                else if (dir === 'down') {
-                    if (appender) {
-                        if (tail-rows < 0) {
-                            tail *=rows-1;
-                            this.append(tail);
-                        }
-                        else {
-                            this.append(tail-rows);
-                        }
-                    }
-                    if (grids[value].y === rows -1){
-                        current.value -= (rows-1)*rows;
-                    }else {
-                        current.value += rows;
-                    }
-                }
-                else if (dir === 'up') {
-                    if (appender) {
-                        this.append(tail+rows);
-                    }
-                    if (grids[value].y === 0){
-                        current.value += (rows-1)*rows;
-                    }else {
-                        current.value -= rows;
-                    }
-                }
-                if (appender) {
-                     let gPos = Math.floor(Math.random() * grids.length);
-                    while (grids[gPos].isPaint === true) {
-                     gPos = Math.floor(Math.random() * grids.length);
-                    }
-                    pos = gPos;
-                }
-                current.oldValue = value;
+    function placeFood() {
+        var open = [];
+        for (var y = 0; y < ROWS; y++) {
+            for (var x = 0; x < COLS; x++) {
+                var taken = snake.some(function (part) { return part.x === x && part.y === y; });
+                if (!taken) open.push({ x: x, y: y });
             }
-            else {
-                current.value = current.next.oldValue;
-                current.oldValue = value;
-            }
-            current = current.previous;
         }
-        console.log('ended');
+        food = open[rand(open.length)];
     }
-    
-    this.traverse = function () {
-        let current = this.head.previous;
-        let gps = [];
-        while(current !== null) {
-            gps.push(current.value);
-            current = current.previous;
-        }
-        return gps;
-    }
-    
-    this.empty = function () {
-        let current = this.head.previous;
-        while(current !== null) {
-            gps.push(current.value);
-            current = current.previous;
-        }
-        
-    }
-}
 
-function Node(value) {
-    this.value = value;
-    this.oldValue = value;
-    this.previous = null;
-    this.next = null;
-}
+    function roundRect(x, y, w, h, r) {
+        ctx.beginPath();
+        ctx.moveTo(x + r, y);
+        ctx.arcTo(x + w, y, x + w, y + h, r);
+        ctx.arcTo(x + w, y + h, x, y + h, r);
+        ctx.arcTo(x, y + h, x, y, r);
+        ctx.arcTo(x, y, x + w, y, r);
+        ctx.closePath();
+        ctx.fill();
+    }
+
+    function draw() {
+        ctx.fillStyle = '#020617';
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
+        ctx.fillStyle = '#fb7185';
+        ctx.beginPath();
+        ctx.arc(food.x * TILE + TILE / 2, food.y * TILE + TILE / 2, TILE / 2 - 3, 0, Math.PI * 2);
+        ctx.fill();
+        snake.forEach(function (part, index) {
+            ctx.fillStyle = index === 0 ? '#86efac' : '#22c55e';
+            roundRect(part.x * TILE + 1, part.y * TILE + 1, TILE - 2, TILE - 2, 4);
+        });
+    }
+
+    function stop(message) {
+        alive = false;
+        clearInterval(timer);
+        statusEl.textContent = message;
+        draw();
+    }
+
+    function tick() {
+        if (!alive) return;
+        dir = queued;
+        var head = { x: snake[0].x + dir.x, y: snake[0].y + dir.y };
+        if (head.x < 0 || head.y < 0 || head.x >= COLS || head.y >= ROWS) {
+            stop('Game over. You hit a wall.');
+            return;
+        }
+        var growing = food && head.x === food.x && head.y === food.y;
+        var body = growing ? snake : snake.slice(0, -1);
+        if (body.some(function (part) { return part.x === head.x && part.y === head.y; })) {
+            stop('Game over. You hit your tail.');
+            return;
+        }
+        snake.unshift(head);
+        if (growing) {
+            score += 1;
+            scoreEl.textContent = String(score);
+            if (snake.length === COLS * ROWS) {
+                stop('You filled the board.');
+                return;
+            }
+            placeFood();
+        } else {
+            snake.pop();
+        }
+        draw();
+    }
+
+    function setDir(x, y) {
+        if (!alive) return;
+        if (x === -dir.x && y === -dir.y) return;
+        if (x === -queued.x && y === -queued.y) return;
+        queued = { x: x, y: y };
+    }
+
+    function reset() {
+        snake = [{ x: 6, y: 10 }, { x: 5, y: 10 }, { x: 4, y: 10 }];
+        dir = { x: 1, y: 0 };
+        queued = { x: 1, y: 0 };
+        score = 0;
+        alive = true;
+        scoreEl.textContent = '0';
+        statusEl.textContent = 'Arrow keys to turn.';
+        placeFood();
+        draw();
+        clearInterval(timer);
+        timer = setInterval(tick, 120);
+    }
+
+    document.addEventListener('keydown', function (event) {
+        if (event.metaKey || event.ctrlKey || event.altKey) return;
+        var map = {
+            ArrowUp: [0, -1],
+            ArrowDown: [0, 1],
+            ArrowLeft: [-1, 0],
+            ArrowRight: [1, 0]
+        };
+        if (!map[event.key]) return;
+        event.preventDefault();
+        setDir(map[event.key][0], map[event.key][1]);
+    });
+
+    var startX = 0;
+    var startY = 0;
+    canvas.addEventListener('pointerdown', function (event) {
+        startX = event.clientX;
+        startY = event.clientY;
+    });
+    canvas.addEventListener('pointerup', function (event) {
+        var dx = event.clientX - startX;
+        var dy = event.clientY - startY;
+        if (Math.hypot(dx, dy) < 20) return;
+        if (Math.abs(dx) > Math.abs(dy)) setDir(dx > 0 ? 1 : -1, 0);
+        else setDir(0, dy > 0 ? 1 : -1);
+    });
+
+    document.getElementById('restart').addEventListener('click', reset);
+    reset();
+})();
