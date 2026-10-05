@@ -1,220 +1,253 @@
 <!DOCTYPE html>
-<html lang="">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Untitled Document</title>
-	<meta name="Author" content=""/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Minesweeper</title>
     <style>
-        .box {
-            background: red !important;
-            width: 30px;
-            height: 30px;
-            border: solid red 2px;
-            display: inline-block;
-            margin-left: 1px;
-            margin-top: 2px;
-            color: white;
+        body {
+            margin: 0;
+            font-family: ui-sans-serif, system-ui, sans-serif;
+            background: #0f172a;
+            color: #e2e8f0;
         }
-        .box-h {
-            background: red !important;
-            color: red
+        main { max-width: 460px; margin: 0 auto; padding: 24px 16px 48px; }
+        a { color: #7dd3fc; }
+        h1 { margin: 8px 0; }
+        .bar { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; }
+        button {
+            font: inherit;
+            font-weight: 700;
+            border: 0;
+            border-radius: 8px;
+            background: #38bdf8;
+            color: #0f172a;
+            padding: 8px 12px;
+            cursor: pointer;
         }
-        .free {
-            background: red;
-        }
-        .bomb {
-            background: black;
-        }
-        .txt-holder {
+        button.on { background: #facc15; }
+        #status { min-height: 2.6em; color: #cbd5e1; }
+        #grid {
             display: grid;
-            justify-content: center;
-            align-items: center;
-            align-content: center;
-            height: 100%
+            grid-template-columns: repeat(10, 32px);
+            gap: 2px;
+            width: max-content;
+            background: #334155;
+            padding: 2px;
+            border-radius: 6px;
+            user-select: none;
         }
-        .flag {
-            background: yellow !important
+        button.cell {
+            width: 32px;
+            height: 32px;
+            padding: 0;
+            border-radius: 3px;
+            background: #64748b;
+            color: #0f172a;
+            font-size: 16px;
         }
+        button.cell.open { background: #e2e8f0; }
+        button.cell.flag { background: #facc15; }
+        button.cell.boom { background: #ef4444; color: white; }
+        button.cell.mine { background: #1e293b; color: #fecaca; }
+        button.cell[data-n="1"] { color: #1d4ed8; }
+        button.cell[data-n="2"] { color: #15803d; }
+        button.cell[data-n="3"] { color: #b91c1c; }
+        button.cell[data-n="4"] { color: #6d28d9; }
+        button.cell[data-n="5"] { color: #9a3412; }
+        button.cell[data-n="6"] { color: #0f766e; }
+        button.cell[data-n="7"] { color: #0f172a; }
+        button.cell[data-n="8"] { color: #475569; }
+        .help { color: #94a3b8; }
     </style>
 </head>
 <body>
-
-    <div class="parent"></div>
-
-    <script src="../js/jquery.js"></script>
-    
-    
+    <main>
+        <p><a href="../index.html">All games</a></p>
+        <h1>Minesweeper</h1>
+        <div class="bar">
+            <strong>Left <span id="bombs">10</span></strong>
+            <button id="face" type="button">🙂</button>
+            <button id="flagMode" type="button">Flag mode</button>
+        </div>
+        <p id="status">Left click opens a cell. Right click, or Flag mode, marks a bomb. The first click is always safe.</p>
+        <div id="grid"></div>
+        <p class="help">Ten bombs on a 10 by 10 field. Open every safe cell to win.</p>
+    </main>
     <script>
-        $(document).ready(function () {
-            var _size = 10;
-            var _sizeq = _size*_size;
-            var _size_b = _size-1;
-            var _grid = [];
-            var _bombs = [];
-            
-            //setup
-            for(let y = 0; y <_size; y++) {
-                for(let x =0; x< _size; x++) {
-                    let box = new Box(x, y);
-                    _grid.push(box);
-                }
-            }
-            
-            //place bomb
-            while (_bombs.length < 10) {
-                let rnd = Math.floor(Math.random() * (_sizeq-1)) + 1;
-                if (!_bombs.includes(_grid[rnd])) {
-                    _grid[rnd].bomb = true;
-                    _bombs.push(_grid[rnd]);
-                }
-            }
-            
-            //add counter
-            for(let bomb of _bombs) {
-                addOneToNeigh(bomb);
-            }
-            
-            for(let j = 0; j < _size; j++) {
-                for(let i = 0; i < _size; i++) {
-                    let _1d = i + _size * j;
-                    let box = _grid[_1d]
-                    let x = box.x
-                    let y = box.y
-                    let txt = box.counter;
-                    if (box.bomb) {
-                        $('.parent').append(`<div id="box-${x}-${y}" class="box box-h bomb"><div class="txt-holder">${txt}<div></div>`);
-                        continue;
-                    }
-                    $('.parent').append(`<div id="box-${x}-${y}" class="box box-h free"><div class="txt-holder">${txt}<div></div>`);
-                }
-                $('.parent').append('<br/>')
-            }
-            
-            $('.box').click(function () {
-                let _id = $(this)[0].id.split("-");
-                let x = parseInt(_id[1]);
-                let y = parseInt(_id[2]);
-                let _gp = x + _size*y;
-                let box = _grid[_gp];
-                if (!box.bomb) {
-                    $(this).removeClass("box-h");
-                    box.visited = true;
-                    if (box.counter === 0) {
-                        unlocker(box); // Todo
-                    }
-                    return;
-                }
-                alert('game over');
-            })
-            
-            function boxBorderRadius() {
-                $(`#box-0-0`).css("border-top-left-radius", "5px")
-                $(`#box-0-${_size_b}`).css("border-bottom-left-radius", "5px")
-                $(`#box-${_size_b}-0`).css("border-top-right-radius", "5px")
-                $(`#box-${_size_b}-${_size_b}`).css("border-bottom-right-radius", "5px")
-            }
-            boxBorderRadius();
-            
-            function unlocker(box) {
-                let neigh = getNeigh(box);
-                for (let _n of neigh) {
-                    let _gp = _n.x + _size * _n.y;
-                    let _nb = _grid[_gp];
-                    $(`#box-${_n.x}-${_n.y}`).removeClass("box-h");
-                    if (_nb.counter === 0 && _nb.visited === false) {
-                        _nb.visited = true;
-                        unlocker(_nb);
-                    }
-                    _nb.visited = true;
-                }
-            }
-            
-            
-            
-            function addOneToNeigh(bomb) {
-                let neigh = getNeigh(bomb);
-                for (const _n of neigh) {     
-                    let _1d = _n.x + (_size_b+1) * _n.y;
-                    _grid[_1d].counter++;
-                }
-            }
-            
-            function getNeigh(box) {
-                let x = box.x;
-                let y = box.y;
-                let neigh = [];
+        var SIZE = 10;
+        var BOMBS = 10;
+        var grid = [];
+        var started = false;
+        var over = false;
+        var won = false;
+        var flagMode = false;
+        var revealedCount = 0;
+        var buttons = [];
+        var gridEl = document.getElementById('grid');
+        var bombEl = document.getElementById('bombs');
+        var statusEl = document.getElementById('status');
+        var faceEl = document.getElementById('face');
+        var flagBtn = document.getElementById('flagMode');
 
-                if (y > 0) {
-                    let up = {
-                        x: x,
-                        y: y-1
-                    }
-                    neigh.push(up);
+        function neighbors(x, y) {
+            var out = [];
+            for (var dy = -1; dy <= 1; dy++) {
+                for (var dx = -1; dx <= 1; dx++) {
+                    if (!dx && !dy) continue;
+                    var nx = x + dx;
+                    var ny = y + dy;
+                    if (nx >= 0 && ny >= 0 && nx < SIZE && ny < SIZE) out.push(grid[ny][nx]);
                 }
-                if (x < _size_b && y > 0) {
-                    let ue = {
-                        x: x+1,
-                        y: y-1
-                    }
-                    neigh.push(ue);
-                }
-                if (x < _size_b) {
-                    let r = {
-                        x: x+1,
-                        y: y
-                    }
-                    neigh.push(r);
-                }
-                if (x < _size_b && y < _size_b) {
-                    let de = {
-                        x: x+1,
-                        y: y+1
-                    }
-                    neigh.push(de);
-                }
-                if (y < _size_b) {
-                    let d = {
-                        x: x,
-                        y: y+1
-                    }
-                    neigh.push(d);
-                }
-                if (x > 0 && y < _size_b) {
-                    let dw = {
-                        x: x-1,
-                        y: y+1
-                    }
-                    neigh.push(dw);
-                }
-                if (x > 0) {
-                    let l = {
-                        x: x-1,
-                        y: y
-                    }
-                    neigh.push(l);
-                }
-                if (x > 0 && y > 0) {
-                    let uw = {
-                        x: x-1,
-                        y: y-1
-                    }
-                    neigh.push(uw);
-                }
-                return neigh;
             }
-        })  
-        
-        
-        
-        
-        function Box(x, y) {
-            this.x = x;
-            this.y = y;
-            this.bomb = false;
-            this.flag = false;
-            this.counter = 0;
-            this.visited = false;
+            return out;
         }
+
+        function placeBombs(sx, sy) {
+            var banned = {};
+            banned[sy * SIZE + sx] = true;
+            neighbors(sx, sy).forEach(function (cell) {
+                banned[cell.y * SIZE + cell.x] = true;
+            });
+            var placed = 0;
+            while (placed < BOMBS) {
+                var i = Math.floor(Math.random() * SIZE * SIZE);
+                if (banned[i]) continue;
+                var x = i % SIZE;
+                var y = Math.floor(i / SIZE);
+                if (grid[y][x].bomb) continue;
+                grid[y][x].bomb = true;
+                placed++;
+            }
+            for (var y = 0; y < SIZE; y++) {
+                for (var x = 0; x < SIZE; x++) {
+                    if (grid[y][x].bomb) continue;
+                    grid[y][x].count = neighbors(x, y).filter(function (cell) { return cell.bomb; }).length;
+                }
+            }
+        }
+
+        function flood(x, y) {
+            var stack = [[x, y]];
+            while (stack.length) {
+                var pair = stack.pop();
+                var cell = grid[pair[1]][pair[0]];
+                if (cell.revealed || cell.flagged || cell.bomb) continue;
+                cell.revealed = true;
+                revealedCount++;
+                if (cell.count === 0) {
+                    neighbors(cell.x, cell.y).forEach(function (n) {
+                        if (!n.revealed && !n.flagged && !n.bomb) stack.push([n.x, n.y]);
+                    });
+                }
+            }
+        }
+
+        function render() {
+            var flags = 0;
+            for (var y = 0; y < SIZE; y++) {
+                for (var x = 0; x < SIZE; x++) {
+                    var cell = grid[y][x];
+                    var el = buttons[y * SIZE + x];
+                    if (cell.flagged) flags++;
+                    el.className = 'cell';
+                    el.textContent = '';
+                    el.removeAttribute('data-n');
+                    if (cell.revealed) {
+                        el.classList.add('open');
+                        if (cell.bomb) {
+                            el.classList.add('boom');
+                            el.textContent = '●';
+                        } else if (cell.count > 0) {
+                            el.textContent = String(cell.count);
+                            el.dataset.n = String(cell.count);
+                        }
+                    } else if (cell.flagged) {
+                        el.classList.add('flag');
+                        el.textContent = '⚑';
+                    } else if (over && cell.bomb) {
+                        el.classList.add('open', 'mine');
+                        el.textContent = '●';
+                    }
+                }
+            }
+            bombEl.textContent = String(BOMBS - flags);
+            faceEl.textContent = won ? '😎' : over ? '😵' : '🙂';
+        }
+
+        function finish(message, didWin) {
+            over = !didWin;
+            won = didWin;
+            statusEl.textContent = message;
+            render();
+        }
+
+        function openCell(x, y) {
+            if (over || won) return;
+            if (!started) {
+                placeBombs(x, y);
+                started = true;
+            }
+            var cell = grid[y][x];
+            if (cell.revealed || cell.flagged) return;
+            if (cell.bomb) {
+                cell.revealed = true;
+                finish('Game over.', false);
+                return;
+            }
+            flood(x, y);
+            if (revealedCount === SIZE * SIZE - BOMBS) finish('You cleared the field.', true);
+            else render();
+        }
+
+        function toggleFlag(x, y) {
+            if (over || won || !started) return;
+            var cell = grid[y][x];
+            if (cell.revealed) return;
+            cell.flagged = !cell.flagged;
+            render();
+        }
+
+        function fresh() {
+            grid = [];
+            buttons = [];
+            gridEl.innerHTML = '';
+            started = false;
+            over = false;
+            won = false;
+            revealedCount = 0;
+            statusEl.textContent = 'Left click opens a cell. Right click, or Flag mode, marks a bomb. The first click is always safe.';
+            for (var y = 0; y < SIZE; y++) {
+                grid[y] = [];
+                for (var x = 0; x < SIZE; x++) {
+                    grid[y][x] = { x: x, y: y, bomb: false, count: 0, revealed: false, flagged: false };
+                    var button = document.createElement('button');
+                    button.type = 'button';
+                    button.className = 'cell';
+                    (function (cx, cy, el) {
+                        el.addEventListener('click', function () {
+                            if (flagMode && started) toggleFlag(cx, cy);
+                            else openCell(cx, cy);
+                        });
+                        el.addEventListener('contextmenu', function (event) {
+                            event.preventDefault();
+                            toggleFlag(cx, cy);
+                        });
+                    })(x, y, button);
+                    gridEl.appendChild(button);
+                    buttons.push(button);
+                }
+            }
+            render();
+        }
+
+        flagBtn.addEventListener('click', function () {
+            flagMode = !flagMode;
+            flagBtn.classList.toggle('on', flagMode);
+            flagBtn.textContent = flagMode ? 'Flag mode on' : 'Flag mode';
+        });
+        faceEl.addEventListener('click', fresh);
+        fresh();
     </script>
 </body>
 </html>
