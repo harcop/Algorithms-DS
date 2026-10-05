@@ -1,192 +1,136 @@
-const arr = [];
-const  w = 3;
-let gridPos = [0,1,2,3,4,5,6,7,8];
-let winner = "-1";
-let cp = 1; //current player;
+const LINES = [
+    [0, 1, 2], [3, 4, 5], [6, 7, 8],
+    [0, 3, 6], [1, 4, 7], [2, 5, 8],
+    [0, 4, 8], [2, 4, 6]
+];
 
-let _c = 0;
-for (let y = 0; y < w; y++) {
-    arr.push([]);
-    for (let x = 0; x< w; x++) {
-        arr[y][x] = 0;
-        $('#gridBox').append(`<div class="smallBox" id="${_c}">.</div>`);
-        _c += 1;
+function outcome(board) {
+    for (let i = 0; i < LINES.length; i++) {
+        const a = LINES[i][0];
+        const b = LINES[i][1];
+        const c = LINES[i][2];
+        if (board[a] && board[a] === board[b] && board[a] === board[c]) return board[a];
     }
-    $('#gridBox').append('<br/>');
+    if (board.every(function (cell) { return cell; })) return 'draw';
+    return null;
 }
 
-function play({x, y, player}) {
-    if (player === 1) {
-        arr[y][x] = "O";
-    }else {
-        arr[y][x] = "X";
-    }
-}
-
-function cPlayers() {
-    //computer player;
-    let space = true;
-    let currentPlayer = 1;
-    while (space) {
-        let _s = checkSpace();
-        if (!_s) {
-            break;
-        }
-        let rnd = pick();
-        let y = Math.floor(rnd / 3);
-        let x = Math.floor(rnd % 3);
-        console.log({x,y})
-        if (arr[y][x] === 0) {
-            play({x, y, player:currentPlayer});
-            currentPlayer = 1 - currentPlayer;
-        }
-        let wins = checkWinner()
-        if (wins) {
-            break;
+function winningLine(board) {
+    for (let i = 0; i < LINES.length; i++) {
+        const line = LINES[i];
+        if (board[line[0]] && board[line[0]] === board[line[1]] && board[line[0]] === board[line[2]]) {
+            return line;
         }
     }
+    return null;
 }
 
-function computerPlayer() {
-    let rnd = pick();
-    let y = Math.floor(rnd / 3);
-    let x = Math.floor(rnd % 3);
-    console.log(rnd);
-    if (arr[y][x] === 0) {
-        $(`#${rnd}`).text('X');
-        play({x, y, player: 2});
-        return true;
+function chooseMove(board) {
+    const snapshot = board.slice();
+    const empty = [];
+    snapshot.forEach(function (cell, index) {
+        if (!cell) empty.push(index);
+    });
+
+    function find(player) {
+        for (let i = 0; i < empty.length; i++) {
+            const index = empty[i];
+            snapshot[index] = player;
+            const result = outcome(snapshot);
+            snapshot[index] = '';
+            if (result === player) return index;
+        }
+        return null;
     }
-    return false;
+
+    const win = find('X');
+    if (win !== null) return win;
+    const block = find('O');
+    if (block !== null) return block;
+    if (!snapshot[4]) return 4;
+    const corners = [0, 2, 6, 8].filter(function (index) { return !snapshot[index]; });
+    if (corners.length) return corners[Math.floor(Math.random() * corners.length)];
+    return empty[Math.floor(Math.random() * empty.length)];
 }
 
-function humanPlayer(position) {
-    let y = Math.floor(position / 3);
-    let x = Math.floor(position % 3);
-    if (arr[y][x] === 0) {
-        play({x, y, player: 1});
-        gridPos.splice(gridPos.indexOf(position), 1);
-        return true;
-    }
-    return false;
+if (typeof document !== 'undefined') {
+    bootTicTacToe();
 }
 
-function ComputerOpponent() {
-    let space = true;
-    let _s = checkSpace();
-    if (!_s) {
-        return;
-    }
-    let wins = checkWinner()
-    if (wins) {
-        return;
-    }
-    computerPlayer();
-}
+function bootTicTacToe() {
+    const boardEl = document.getElementById('board');
+    const statusEl = document.getElementById('status');
+    const buttons = [];
+    let board = Array(9).fill('');
+    let over = false;
+    let locked = false;
+    let round = 0;
 
-function humanShouldPlay(position) {
-    let _p = humanPlayer(position);
-    if (_p) {
-        $(`#${position}`).text('O');
-        ComputerOpponent();
+    for (let i = 0; i < 9; i++) {
+        const button = document.createElement('button');
+        button.type = 'button';
+        button.className = 'cell';
+        button.addEventListener('click', function () { play(i); });
+        boardEl.appendChild(button);
+        buttons.push(button);
     }
-}
 
+    function render() {
+        const line = winningLine(board);
+        buttons.forEach(function (button, index) {
+            const mark = board[index];
+            button.textContent = mark;
+            button.className = 'cell';
+            if (mark === 'X') button.classList.add('x');
+            if (mark === 'O') button.classList.add('o');
+            if (line && line.indexOf(index) !== -1) button.classList.add('win');
+        });
+    }
 
-function checkSpace() {
-    let z = 0;
-    for(let i = 0; i < arr.length; i++) {
-        for (let j = 0; j < arr.length; j++) {
-            if (arr[i][j] !== 0) {
-                z += 1;
+    function finish(result) {
+        over = true;
+        locked = false;
+        if (result === 'draw') statusEl.textContent = 'Draw.';
+        else if (result === 'O') statusEl.textContent = 'You win.';
+        else statusEl.textContent = 'Computer wins.';
+        render();
+    }
+
+    function play(index) {
+        if (locked || over || board[index]) return;
+        board[index] = 'O';
+        const result = outcome(board);
+        if (result) {
+            finish(result);
+            return;
+        }
+        locked = true;
+        statusEl.textContent = 'Computer is thinking…';
+        render();
+        const ticket = round;
+        setTimeout(function () {
+            if (ticket !== round) return;
+            const move = chooseMove(board);
+            if (move != null) board[move] = 'X';
+            const after = outcome(board);
+            locked = false;
+            if (after) finish(after);
+            else {
+                statusEl.textContent = 'Your turn. You are O.';
+                render();
             }
-        }
+        }, 180);
     }
-    if (z === 9) {
-        return false;
-    }
-    return true;
-}
 
-function pick () {
-    let rnd = randBtw(...gridPos);
-    gridPos.splice(gridPos.indexOf(rnd),1);
-    return rnd;
-}
+    function newGame() {
+        round++;
+        board = Array(9).fill('');
+        over = false;
+        locked = false;
+        statusEl.textContent = 'Your turn. You are O.';
+        render();
+    }
 
-function checkWinner() {
-    const wins = [
-        [0,1,2],
-        [0,3,6],
-        [0,4,8],
-        [1,4,7],
-        [2,4,6],
-        [2,5,8],
-        [3,4,5],
-        [6,7,8],
-    ];
-    for (const win of wins) {
-        let x = 0;
-        let o = 0;
-        for(const p of win) {
-            let _y = Math.floor(p / 3);
-            let _x = Math.floor(p % 3);
-            if (arr[_y][_x] === "X") {
-                x += 1;
-            } else if (arr[_y][_x] === "O") {
-                o += 1;
-            }
-        }
-        if (x === 3) {
-            console.log("X wins");
-            winner = "X"
-            break;
-        }
-        else if (o === 3) {
-            console.log("O wins");
-            winner = "O"
-            break;
-        }
-    }
-    if (winner === "-1") {
-        return false;
-    }
-    else {
-        if (winner === "X") {
-            alert("X wins")
-        }else {
-            alert("O wins")
-        }
-    }
-    return true;
+    document.getElementById('restart').addEventListener('click', newGame);
+    newGame();
 }
-
-function randBtw (...num) {
-    const _f = {};
-    const _n = num.length * 3;
-    let max = 0;
-    let p = -1;
-    for (let i = 0; i < _n; i++) {
-        const pos = Math.floor(Math.random() * num.length);
-        if (_f[pos] === undefined) {
-            _f[pos] = 0;
-        }
-        _f[pos] += 1;
-        if (_f[pos] > max) {
-            max = _f[pos];
-            p = pos;
-        }
-    }
-    return num[p];
-}
-
-function print(){
-    let _f = ""
-    for(const _a of arr) {
-        _f += _a + "\n";
-    }
-    console.log(_f);
-}
-
-// console.log(arr);
-//print();
