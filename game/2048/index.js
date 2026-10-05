@@ -1,263 +1,210 @@
-const arr = [];
-const w = 5;
-
-for (let y = 0; y < w; y++) {
-    arr.push([]);
-    for (let x = 0; x< w; x++) {
-        arr[y][x] = 0;
-        $('#gridBox').append(`<div class="smallBox" id="${y}${x}"> .</div>`);
-    }
-    $('#gridBox').append('<br/>');
-}
-
-function init () {
-    const x1 = Math.floor(Math.random() * 4); 
-    const y1 = Math.floor(Math.random() * 4); 
-    const x2 = Math.floor(Math.random() * 4); 
-    const y2 = Math.floor(Math.random() * 4); 
-    console.log(x1,x2,y1,y2);
-    arr[y1][x1] = randBtw(2,4)
-    arr[y2][x2] = randBtw(2,4)
-    $(`#${y1}${x1}`).text(arr[y1][x1])
-    $(`#${y2}${x2}`).text(arr[y2][x2])
-}
-
-function randBtw (...num) {
-    const _f = {};
-    const _n = num.length * 3;
-    let max = 0;
-    let p = -1;
-    for (let i = 0; i < _n; i++) {
-        const pos = Math.floor(Math.random() * num.length);
-        if (_f[pos] === undefined) {
-            _f[pos] = 0;
-        }
-        _f[pos] += 1;
-        if (_f[pos] > max) {
-            max = _f[pos];
-            p = pos;
-        }
-    }
-    return num[p];
-}
-
-function newDigit () {
-    let _t = []
-    arr.forEach((row, y) => {
-        row.forEach((col, x) => {
-            if (col === 0) {
-                _t.push(`${y}${x}`);
-            }
-        })
-    })
-    return _t;
-}
-
-function placeNewDigit () {
-    const _t = newDigit();
-    const pos = randBtw(..._t)
-    const _p = pos.split('');
-    const [y, x] = _p;
-    arr[y][x] = randBtw(2,4);
-    $(`#${y}${x}`).text(arr[y][x])
-}
-
-let _m = false;
-let _move = false;
-function swapUp () {
-    for(let x = 0; x < w; x++) {
-        _m = false;
-        for (let y = 1; y < w; y++) {
-            let ele = arr[y][x];
-            if (ele === 0) {
-                continue;
-            } else {
-                loopUp(ele, x, y);
-            }    
-        }
-    }
-    if (_move) {
-        placeNewDigit();
-        _move = false;
-    }
-}
-function swapDown () {
-    for(let x = 0; x < w; x++) {
-        _m = false;
-        for (let y = w-2; y >= 0; y--) {
-            let ele = arr[y][x];
-            if (ele === 0) {
-                continue;
-            } else {
-                loopDown(ele, x, y);
-            }    
-        }
-    }    
-    if (_move) {
-        placeNewDigit();
-        _move = false;
-    }
-}
-
-function swapLeft () {
-    for(let y = 0; y < w; y++) {
-        _m = false;
-        for (let x = 1; x < w; x++) {
-            let ele = arr[y][x];
-            if (ele === 0) {
-                continue;
-            } else {
-                loopLeft(ele, x, y);
-            }    
-        }
-    }   
-    if (_move) {
-        placeNewDigit();
-        _move = false;
-    }
-}
-
-function swapRight () {
-    for(let y = 0; y < w; y++) {
-        _m = false;
-        for (let x = w - 1; x >= 0; x--) {
-            let ele = arr[y][x];
-            if (ele === 0) {
-                continue;
-            } else {
-                loopRight(ele, x, y);
-            }    
-        }
-    }   
-    if (_move) {
-        placeNewDigit();
-        _move = false;
-    }
-}
-
-function arrr() {
-    let _f = '';
-    arr.forEach(ele => {
-        _f += `${ele}\n`;
-    })
-    return _f;
-}
-
-function loopUp (ele, x, y) {
-    if (y > 0 && ele > 0) {
-        let _y = y - 1;
-        let up = arr[_y][x];
-        if (up === 0) {
-            console.log(up)
-            arr[y][x] = 0;
-            arr[_y][x] = ele;
-
-            $(`#${y}${x}`).text('.');
-            $(`#${_y}${x}`).text(ele);
-            
-            _move = true;
-            loopUp(ele, x, _y);
+function slide(values) {
+    const tiles = values.filter(function (v) { return v !== 0; });
+    const out = [];
+    let gained = 0;
+    for (let i = 0; i < tiles.length; i++) {
+        if (i + 1 < tiles.length && tiles[i] === tiles[i + 1]) {
+            const merged = tiles[i] * 2;
+            out.push(merged);
+            gained += merged;
+            i++;
         } else {
-            console.log(ele, up)
-            if(ele === up && !_m) {
-                console.log('am')
-                arr[y][x] = 0;
-                arr[_y][x] = ele * 2;
-                $(`#${y}${x}`).text('.');
-                $(`#${_y}${x}`).text(ele*2)
-
-                _move = true;
-                _m  = true;
-            }
+            out.push(tiles[i]);
         }
     }
+    while (out.length < values.length) out.push(0);
+    return { line: out, gained: gained };
 }
 
-function loopDown (ele, x, y) {
-    if (y < w - 1 && ele > 0) {
-        let _y = y + 1;
-        let down = arr[_y][x];
-        if (down === 0) {
-            console.log(down)
-            arr[y][x] = 0;
-            arr[_y][x] = ele;
-            $(`#${y}${x}`).text('.');
-            $(`#${_y}${x}`).text(ele);
+function linesFor(dir) {
+    const lines = [];
+    for (let i = 0; i < 4; i++) {
+        const coords = [];
+        for (let j = 0; j < 4; j++) {
+            if (dir === 'left') coords.push([i, j]);
+            else if (dir === 'right') coords.push([i, 3 - j]);
+            else if (dir === 'up') coords.push([j, i]);
+            else coords.push([3 - j, i]);
+        }
+        lines.push(coords);
+    }
+    return lines;
+}
 
-            _move = true;
-            loopDown(ele, x, _y);
-        } else {
-            console.log(ele, down)
-            if(ele === down && !_m) {
-                console.log('am')
-                arr[y][x] = 0;
-                arr[_y][x] = ele * 2;$(`#${y}${x}`).text('.');
-                $(`#${_y}${x}`).text(ele*2);
+function applyMove(board, dir) {
+    const next = board.map(function (row) { return row.slice(); });
+    let moved = false;
+    let gained = 0;
+    linesFor(dir).forEach(function (coords) {
+        const values = coords.map(function (pair) { return next[pair[0]][pair[1]]; });
+        const result = slide(values);
+        gained += result.gained;
+        result.line.forEach(function (v, i) {
+            const r = coords[i][0];
+            const c = coords[i][1];
+            if (next[r][c] !== v) moved = true;
+            next[r][c] = v;
+        });
+    });
+    return { board: next, moved: moved, gained: gained };
+}
 
-                _move = true;
-                _m  = true;
-            }
+function hasMove(board) {
+    for (let r = 0; r < 4; r++) {
+        for (let c = 0; c < 4; c++) {
+            if (board[r][c] === 0) return true;
+            if (c + 1 < 4 && board[r][c] === board[r][c + 1]) return true;
+            if (r + 1 < 4 && board[r][c] === board[r + 1][c]) return true;
         }
     }
+    return false;
 }
 
-function loopRight (ele, x, y) {
-    if (x < w - 1 && ele > 0) {
-        let _x = x + 1;
-        let right = arr[y][_x];
-        if (right === 0) {
-            console.log(right)
-            arr[y][x] = 0;
-            arr[y][_x] = ele;
-            $(`#${y}${x}`).text('.');
-            $(`#${y}${_x}`).text(ele);
-
-            _move = true;
-            loopRight(ele, _x, y);
-        } else {
-            console.log(ele, right)
-            if(ele === right && !_m) {
-                console.log('am')
-                arr[y][x] = 0;
-                arr[y][_x] = ele * 2;
-                $(`#${y}${x}`).text('.');
-                $(`#${y}${_x}`).text(ele*2);
-
-                _move = true;
-                _m  = true;
-            }
+function spawnTile(board) {
+    const empty = [];
+    for (let r = 0; r < 4; r++) {
+        for (let c = 0; c < 4; c++) {
+            if (board[r][c] === 0) empty.push([r, c]);
         }
     }
+    if (!empty.length) return board;
+    const spot = empty[Math.floor(Math.random() * empty.length)];
+    const next = board.map(function (row) { return row.slice(); });
+    next[spot[0]][spot[1]] = Math.random() < 0.9 ? 2 : 4;
+    return next;
 }
 
-function loopLeft (ele, x, y) {
-    if (x > 0 && ele > 0) {
-        let _x = x - 1;
-        let left = arr[y][_x];
-        if (left === 0) {
-            console.log(left)
-            arr[y][x] = 0;
-            arr[y][_x] = ele;
-            $(`#${y}${x}`).text('.');
-            $(`#${y}${_x}`).text(ele);
-            
-            _move = true;
-            loopLeft(ele, _x, y);
-        } else {
-            console.log(ele, left)
-            if(ele === left && !_m) {
-                console.log('am')
-                arr[y][x] = 0;
-                arr[y][_x] = ele * 2;
-                $(`#${y}${x}`).text('.');
-                $(`#${y}${_x}`).text(ele*2);
-                
-                _move = true;
-                _m  = true;
+function tileColor(value) {
+    const palette = {
+        2: ['#eee4da', '#776e65'],
+        4: ['#ede0c8', '#776e65'],
+        8: ['#f2b179', '#f9f6f2'],
+        16: ['#f59563', '#f9f6f2'],
+        32: ['#f67c5f', '#f9f6f2'],
+        64: ['#f65e3b', '#f9f6f2'],
+        128: ['#edcf72', '#f9f6f2'],
+        256: ['#edcc61', '#f9f6f2'],
+        512: ['#edc850', '#f9f6f2'],
+        1024: ['#edc53f', '#f9f6f2'],
+        2048: ['#edc22e', '#f9f6f2']
+    };
+    if (!value) return ['transparent', 'transparent'];
+    return palette[value] || ['#3c3a32', '#f9f6f2'];
+}
+
+function readBest() {
+    try { return Number(localStorage.getItem('algods-2048-best')) || 0; }
+    catch (e) { return 0; }
+}
+
+function writeBest(value) {
+    try { localStorage.setItem('algods-2048-best', String(value)); }
+    catch (e) {}
+}
+
+if (typeof document !== 'undefined') {
+    boot2048();
+}
+
+function boot2048() {
+    const boardEl = document.getElementById('board');
+    const scoreEl = document.getElementById('score');
+    const bestEl = document.getElementById('best');
+    const statusEl = document.getElementById('status');
+    const tiles = [];
+    let board;
+    let score;
+    let best = readBest();
+    let over = false;
+    let won = false;
+
+    for (let i = 0; i < 16; i++) {
+        const cell = document.createElement('div');
+        cell.className = 'cell';
+        const tile = document.createElement('div');
+        tile.className = 'tile';
+        cell.appendChild(tile);
+        boardEl.appendChild(cell);
+        tiles.push(tile);
+    }
+
+    function paint() {
+        for (let r = 0; r < 4; r++) {
+            for (let c = 0; c < 4; c++) {
+                const value = board[r][c];
+                const el = tiles[r * 4 + c];
+                const colors = tileColor(value);
+                el.textContent = value ? String(value) : '';
+                el.style.background = colors[0];
+                el.style.color = colors[1];
+                el.classList.toggle('small', value >= 1024);
             }
         }
+        scoreEl.textContent = String(score);
+        bestEl.textContent = String(best);
     }
+
+    function setup() {
+        board = spawnTile(spawnTile([
+            [0, 0, 0, 0],
+            [0, 0, 0, 0],
+            [0, 0, 0, 0],
+            [0, 0, 0, 0]
+        ]));
+        score = 0;
+        over = false;
+        won = false;
+        statusEl.textContent = 'Arrow keys or swipe to slide.';
+        paint();
+    }
+
+    function act(dir) {
+        if (over) return;
+        const result = applyMove(board, dir);
+        if (!result.moved) return;
+        board = spawnTile(result.board);
+        score += result.gained;
+        if (score > best) {
+            best = score;
+            writeBest(best);
+        }
+        if (!won && board.some(function (row) { return row.some(function (v) { return v >= 2048; }); })) {
+            won = true;
+            statusEl.textContent = 'You made 2048. Keep going, or start a new game.';
+        }
+        if (!hasMove(board)) {
+            over = true;
+            statusEl.textContent = won ? 'No moves left. You made 2048.' : 'No moves left.';
+        }
+        paint();
+    }
+
+    document.addEventListener('keydown', function (event) {
+        if (event.metaKey || event.ctrlKey || event.altKey) return;
+        const map = { ArrowLeft: 'left', ArrowRight: 'right', ArrowUp: 'up', ArrowDown: 'down' };
+        if (!map[event.key]) return;
+        event.preventDefault();
+        act(map[event.key]);
+    });
+
+    document.querySelectorAll('[data-dir]').forEach(function (button) {
+        button.addEventListener('click', function () { act(button.dataset.dir); });
+    });
+
+    let startX = 0;
+    let startY = 0;
+    boardEl.addEventListener('pointerdown', function (event) {
+        startX = event.clientX;
+        startY = event.clientY;
+    });
+    boardEl.addEventListener('pointerup', function (event) {
+        const dx = event.clientX - startX;
+        const dy = event.clientY - startY;
+        if (Math.hypot(dx, dy) < 24) return;
+        if (Math.abs(dx) > Math.abs(dy)) act(dx > 0 ? 'right' : 'left');
+        else act(dy > 0 ? 'down' : 'up');
+    });
+
+    document.getElementById('restart').addEventListener('click', setup);
+    setup();
 }
-init();
-// swapDown();
-// console.log(arr);
