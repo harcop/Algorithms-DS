@@ -3,24 +3,73 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Hex 2048</title>
     <style>
-        .box {
-            width: 100px;
-            height: 100px;
-            background: red;
-            display: inline-block;
-            clip-path: polygon(25% 0%, 75% 0%, 100% 50%, 75% 100%, 25% 100%, 0% 50%);
+        body {
+            margin: 0;
+            font-family: ui-sans-serif, system-ui, sans-serif;
+            background: #faf8ef;
+            color: #776e65;
         }
+        main { max-width: 560px; margin: 0 auto; padding: 24px 16px 48px; }
+        a { color: #8f7a66; }
+        h1 { margin: 8px 0; }
+        .bar, .stats { display: flex; gap: 8px; align-items: center; justify-content: space-between; }
+        .stats div {
+            background: #bbada0;
+            color: #f9f6f2;
+            border-radius: 6px;
+            padding: 8px 12px;
+        }
+        .stats strong { display: block; font-size: 1.2rem; }
+        .stats span { font-size: 0.75rem; text-transform: uppercase; }
+        button {
+            border: 0;
+            border-radius: 6px;
+            background: #8f7a66;
+            color: #f9f6f2;
+            font: inherit;
+            font-weight: 700;
+            padding: 8px 12px;
+            cursor: pointer;
+        }
+        #status { min-height: 1.4em; }
+        canvas { display: block; margin: 8px auto; touch-action: none; background: #bbada0; border-radius: 12px; }
+        .controls {
+            display: grid;
+            grid-template-columns: repeat(2, max-content);
+            gap: 8px;
+            justify-content: center;
+        }
+        .help { color: #8f7a66; }
+        kbd { font-family: inherit; }
     </style>
 </head>
 <body>
-    <div class="main">
-        <div class="box">
-        </div><div class="box">
-        </div><div class="box">
+    <main>
+        <p><a href="../index.html">All games</a></p>
+        <div class="bar">
+            <h1>Hex 2048</h1>
+            <div class="stats">
+                <div><span>Score</span><strong id="score">0</strong></div>
+                <div><span>Best</span><strong id="best">0</strong></div>
+            </div>
         </div>
-    </div>
-
+        <div class="bar">
+            <p id="status">Slide in any of the six directions.</p>
+            <button id="restart" type="button">New game</button>
+        </div>
+        <canvas id="board" width="520" height="460"></canvas>
+        <div class="controls">
+            <button type="button" data-dir="NW">NW <kbd>Q</kbd></button>
+            <button type="button" data-dir="NE">NE <kbd>W</kbd></button>
+            <button type="button" data-dir="W">W <kbd>A</kbd></button>
+            <button type="button" data-dir="E">E <kbd>D</kbd></button>
+            <button type="button" data-dir="SW">SW <kbd>Z</kbd></button>
+            <button type="button" data-dir="SE">SE <kbd>X</kbd></button>
+        </div>
+        <p class="help">Arrow keys cover west, east, northeast, and southeast. You can also drag across the board.</p>
+    </main>
+    <script src="./index.js"></script>
 </body>
 </html>
