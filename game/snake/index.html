@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Snake</title>
+    <style>
+        body {
+            margin: 0;
+            font-family: ui-sans-serif, system-ui, sans-serif;
+            background: #0f172a;
+            color: #e2e8f0;
+        }
+        main { max-width: 440px; margin: 0 auto; padding: 24px 16px 48px; }
+        a { color: #7dd3fc; }
+        h1 { margin: 8px 0; }
+        .bar { display: flex; gap: 12px; align-items: center; }
+        button {
+            font: inherit;
+            font-weight: 700;
+            border: 0;
+            border-radius: 8px;
+            background: #4ade80;
+            color: #052e16;
+            padding: 8px 12px;
+            cursor: pointer;
+        }
+        #status { min-height: 1.4em; color: #cbd5e1; }
+        canvas { display: block; background: #020617; border-radius: 8px; touch-action: none; }
+        .help { color: #94a3b8; }
+    </style>
+</head>
+<body>
+    <main>
+        <p><a href="../index.html">All games</a></p>
+        <div class="bar">
+            <h1>Snake</h1>
+            <strong>Score <span id="score">0</span></strong>
+            <button id="restart" type="button">Restart</button>
+        </div>
+        <p id="status">Arrow keys to turn.</p>
+        <canvas id="board" width="400" height="400"></canvas>
+        <p class="help">Eat the red food. Hitting a wall or your tail ends the run.</p>
+    </main>
+    <script src="./snake.js"></script>
+</body>
+</html>
