@@ -4,50 +4,90 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>2048</title>
+    <style>
+        body {
+            margin: 0;
+            min-height: 100vh;
+            font-family: ui-sans-serif, system-ui, sans-serif;
+            background: #faf8ef;
+            color: #776e65;
+        }
+        main { max-width: 420px; margin: 0 auto; padding: 24px 16px 48px; }
+        a { color: #8f7a66; }
+        h1 { margin: 8px 0; font-size: 2.4rem; }
+        .bar, .stats { display: flex; gap: 8px; align-items: center; justify-content: space-between; }
+        .stats div, button {
+            background: #bbada0;
+            color: #f9f6f2;
+            border-radius: 6px;
+            padding: 8px 12px;
+        }
+        .stats strong { display: block; font-size: 1.2rem; }
+        .stats span { font-size: 0.75rem; text-transform: uppercase; }
+        button {
+            border: 0;
+            font: inherit;
+            font-weight: 700;
+            cursor: pointer;
+        }
+        #status { min-height: 1.4em; }
+        #board {
+            display: grid;
+            grid-template-columns: repeat(4, 72px);
+            grid-template-rows: repeat(4, 72px);
+            gap: 8px;
+            background: #bbada0;
+            padding: 8px;
+            border-radius: 8px;
+            touch-action: none;
+            margin: 12px 0;
+        }
+        .cell {
+            position: relative;
+            background: rgba(238, 228, 218, 0.35);
+            border-radius: 4px;
+        }
+        .tile {
+            position: absolute;
+            inset: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 4px;
+            font-weight: 700;
+            font-size: 28px;
+        }
+        .tile.small { font-size: 18px; }
+        .dpad { display: grid; gap: 6px; justify-content: center; }
+        .dpad div { display: flex; gap: 6px; }
+        .help { color: #8f7a66; font-size: 0.92rem; }
+    </style>
 </head>
-<style>
-    #gridBox {
-        background-color:yellow;
-        display: inline-block;
-        padding: 5px;
-    }
-    .smallBox {
-        display: inline-block;
-        width: 20px;
-        height: 20px;
-        padding: 3px;
-        margin:2px;
-        background-color: grey;
-        color: white;
-        border-radius: 3px;
-        text-align: center;
-    }
-</style>
 <body>
-    <div class="main">
-        <!-- 4 * 4 grid here -->
-        <div id="gridBox">
-
+    <main>
+        <p><a href="../index.html">All games</a></p>
+        <div class="bar">
+            <h1>2048</h1>
+            <div class="stats">
+                <div><span>Score</span><strong id="score">0</strong></div>
+                <div><span>Best</span><strong id="best">0</strong></div>
+            </div>
         </div>
-    </div>
-    <script src="../js/jquery.js"></script>
+        <div class="bar">
+            <p id="status">Arrow keys or swipe to slide.</p>
+            <button id="restart" type="button">New game</button>
+        </div>
+        <div id="board"></div>
+        <div class="dpad">
+            <button type="button" data-dir="up">Up</button>
+            <div>
+                <button type="button" data-dir="left">Left</button>
+                <button type="button" data-dir="down">Down</button>
+                <button type="button" data-dir="right">Right</button>
+            </div>
+        </div>
+        <p class="help">Tiles with the same number merge once per move. A new tile appears after every real move.</p>
+    </main>
     <script src="./index.js"></script>
-
-    <script>
-        $(document).keydown(function (event) {
-            if (event.keyCode === 37) {
-                swapLeft();
-            }
-            else if (event.keyCode === 38) {
-                swapUp();
-            }
-            else if (event.keyCode === 39) {
-                swapRight();
-            }
-            else if (event.keyCode === 40) {
-                swapDown();
-            }
-        })
-    </script>
 </body>
 </html>
