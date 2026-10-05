@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Games</title>
+    <style>
+        body {
+            margin: 0;
+            font-family: ui-sans-serif, system-ui, sans-serif;
+            background: #0f172a;
+            color: #e2e8f0;
+        }
+        main {
+            max-width: 880px;
+            margin: 0 auto;
+            padding: 36px 20px 72px;
+        }
+        h1 { margin: 0 0 8px; font-size: 2rem; }
+        .lead { margin: 0 0 24px; color: #94a3b8; }
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+            gap: 14px;
+        }
+        a.card {
+            display: block;
+            background: #1e293b;
+            border: 1px solid #334155;
+            border-radius: 12px;
+            padding: 16px 18px;
+            color: inherit;
+            text-decoration: none;
+        }
+        a.card:hover { border-color: #38bdf8; }
+        a.card strong { display: block; font-size: 1.1rem; margin-bottom: 6px; }
+        a.card span { color: #94a3b8; line-height: 1.45; }
+    </style>
+</head>
+<body>
+    <main>
+        <h1>Games</h1>
+        <p class="lead">Nine small games. Open any of them in the browser.</p>
+        <div class="grid">
+            <a class="card" href="2048/index.html"><strong>2048</strong><span>Slide tiles. Matching numbers merge into the next power of two.</span></a>
+            <a class="card" href="hex_2048/index.html"><strong>Hex 2048</strong><span>The same merge rules on a hex board, with six directions.</span></a>
+            <a class="card" href="sudoku/index.html"><strong>Sudoku</strong><span>Fill the grid so each row, column, and box contains 1–9 once.</span></a>
+            <a class="card" href="tic_tac_toe/index.html"><strong>Tic-tac-toe</strong><span>You play O. The computer plays X and tries to win or block.</span></a>
+            <a class="card" href="mine_sweeper/index.html"><strong>Minesweeper</strong><span>Open every safe cell. Flag the bombs. The first click is safe.</span></a>
+            <a class="card" href="snake/index.html"><strong>Snake</strong><span>Eat the food and avoid the walls and your own tail.</span></a>
+            <a class="card" href="paddle/paddle.html"><strong>Paddle</strong><span>Breakout. Keep the ball in play and clear the bricks.</span></a>
+            <a class="card" href="2cars/index.html"><strong>2 Cars</strong><span>Switch lanes, collect every gold box, and dodge the red cars.</span></a>
+            <a class="card" href="min_path_sum/index.html"><strong>Min path sum</strong><span>Move only right or down. Reach the corner with the smallest sum.</span></a>
+        </div>
+    </main>
+</body>
+</html>
