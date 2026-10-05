@@ -1,187 +1,158 @@
-var w = 25;
-var rows, cols
-var carH = 40;
-var carW = 20;
-var boxH = 20;
-var line1 = [];
-var line2 = [];
-var line3 = [];
-var line4 = [];
-var x1 = 40;
-var x2 = 240;
+(function () {
+    var canvas = document.getElementById('board');
+    var ctx = canvas.getContext('2d');
+    var scoreEl = document.getElementById('score');
+    var statusEl = document.getElementById('status');
+    var LANES = [67, 153, 267, 353];
+    var PLAYER_Y = 470;
+    var PLAYER_H = 52;
+    var SPEED = 3;
+    var leftLane, rightLane, obstacles, timers, score, alive;
 
-var cars = {
-    line1: line1,
-    line2: line2,
-    line3: line3,
-    line4: line4,
-};
-function setup() {
-    console.log(cars["line1"]);
-    createCanvas(400, 400);
-    rows = floor(height/w);
-    cols = floor(width/w);
-    line1[0] = new Box(40, "line1");
-    line3[0] = new Box(240, "line3");
-    pair1 = new Pair('l');
-    pair2 = new Pair('r');
-}
+    function roundRect(x, y, w, h, r) {
+        ctx.beginPath();
+        ctx.moveTo(x + r, y);
+        ctx.arcTo(x + w, y, x + w, y + h, r);
+        ctx.arcTo(x + w, y + h, x, y + h, r);
+        ctx.arcTo(x, y + h, x, y, r);
+        ctx.arcTo(x, y, x + w, y, r);
+        ctx.closePath();
+        ctx.fill();
+    }
 
-function draw() {
-    background(40,30,90);
-    centerLine()
-    pair1.show();
-    pair2.show();
-    line1.forEach(car => {
-        car.show();
-    })
-//    line2.forEach(car => {
-//        car.show();
-//    })
-    line3.forEach(car => {
-        car.show();
-    })
-//    line4.forEach(car => {
-//        car.show();
-//    })
-}
+    function switchLane(side) {
+        if (!alive) return;
+        if (side === 'left') leftLane = leftLane === 0 ? 1 : 0;
+        else rightLane = rightLane === 2 ? 3 : 2;
+    }
 
-function Car(x, side) {
-    this.x = x;
-    this.y = floor(random() * - 20) - 0; 
-    this.side = side;
-//    this.y = -10; 
-    this.show = function () {
-        stroke(200);
-        fill(0,250,250);
-        rect(this.x,this.y,carW, carH);
-        this.y = this.y + 5;
-        if (this.y >= height/2 + 3 && this.y < height/2 + 8) {
-            let rand = floor(random() * 2);
-            let rand2 = floor(random() * 2);
-            let newX = this.x;
-            if (rand2 === 1) {
-                if(this.x === 40) {
-                    newX = 140;
-                }
-                else if(this.x == 140) {
-                    newX = 40
-                }
-                else if(this.x == 240) {
-                    newX = 340
-                }
-                else if(this.x == 340) {
-                    newX = 240
-                }
-            }
-            if (rand === 1) {
-                car = new Box(newX, this.side);
-            }else {
-                car = new Car(newX, this.side);
-            }
-            cars[side].push(car);   
+    function die(reason) {
+        alive = false;
+        statusEl.textContent = reason + ' Score ' + score + '.';
+    }
+
+    function overlaps(o) {
+        return o.y < PLAYER_Y + PLAYER_H && o.y + o.h > PLAYER_Y;
+    }
+
+    function update() {
+        if (!alive) return;
+        for (var road = 0; road < 2; road++) {
+            timers[road]--;
+            if (timers[road] > 0) continue;
+            var lane = road * 2 + (Math.random() < 0.5 ? 0 : 1);
+            var kind = Math.random() < 0.55 ? 'box' : 'car';
+            obstacles.push({
+                lane: lane,
+                y: -70,
+                kind: kind,
+                h: kind === 'car' ? 52 : 24
+            });
+            timers[road] = 95 + Math.floor(Math.random() * 30);
         }
-        if (this.y >= height-101 && this.y < height - 10) {
-            if (this.x === x1) {
-                alert('game over2');
-            }
-            else if (this.x === x2) {
-                alert('game over2');
+        for (var i = 0; i < obstacles.length; i++) {
+            var o = obstacles[i];
+            o.y += SPEED;
+            var playerLane = o.lane < 2 ? leftLane : rightLane;
+            if (o.lane === playerLane && overlaps(o)) {
+                if (o.kind === 'car') {
+                    die('You hit a car.');
+                    return;
+                }
+                o.collected = true;
+                score++;
+                scoreEl.textContent = String(score);
+            } else if (o.kind === 'box' && !o.collected && o.y > PLAYER_Y + PLAYER_H) {
+                die('You missed a box.');
+                return;
             }
         }
-        if (this.y > height - 30) {
-            cars[side].splice(0,1);
+        obstacles = obstacles.filter(function (o) {
+            return !o.collected && o.y < canvas.height + 20;
+        });
+    }
+
+    function drawCar(lane, color, y) {
+        ctx.fillStyle = color;
+        roundRect(LANES[lane] - 16, y, 32, PLAYER_H, 8);
+        ctx.fillStyle = 'rgba(255,255,255,0.85)';
+        ctx.fillRect(LANES[lane] - 10, y + 8, 20, 12);
+    }
+
+    function draw() {
+        ctx.fillStyle = '#111827';
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
+        ctx.fillStyle = '#1f2937';
+        ctx.fillRect(24, 0, 172, canvas.height);
+        ctx.fillRect(224, 0, 172, canvas.height);
+        ctx.save();
+        ctx.strokeStyle = '#fbbf24';
+        ctx.setLineDash([14, 12]);
+        ctx.beginPath();
+        ctx.moveTo(110, 0);
+        ctx.lineTo(110, canvas.height);
+        ctx.moveTo(310, 0);
+        ctx.lineTo(310, canvas.height);
+        ctx.stroke();
+        ctx.restore();
+
+        obstacles.forEach(function (o) {
+            var x = LANES[o.lane] - 16;
+            if (o.kind === 'car') {
+                ctx.fillStyle = '#ef4444';
+                roundRect(x, o.y, 32, o.h, 8);
+            } else {
+                ctx.fillStyle = '#fbbf24';
+                ctx.fillRect(x + 4, o.y, 24, o.h);
+            }
+        });
+
+        drawCar(leftLane, '#38bdf8', PLAYER_Y);
+        drawCar(rightLane, '#a78bfa', PLAYER_Y);
+
+        if (!alive) {
+            ctx.fillStyle = 'rgba(0,0,0,0.55)';
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+            ctx.fillStyle = '#fff';
+            ctx.font = 'bold 32px sans-serif';
+            ctx.textAlign = 'center';
+            ctx.fillText('Game over', canvas.width / 2, canvas.height / 2);
+            ctx.font = '16px sans-serif';
+            ctx.fillText('Score ' + score, canvas.width / 2, canvas.height / 2 + 32);
+            ctx.textAlign = 'left';
         }
     }
-}
 
-function Box(x, side) {
-    this.x = x;
-    this.y = floor(random() * - 20) - 0;
-    this.side = side;
-//    this.y = -10; 
-    this.show = function () {
-        stroke(200);
-        fill(250,121,0);
-        rect(this.x,this.y,carW, boxH);
-        this.y = this.y + 5;
-        if (this.y >= height/2 + 3 && this.y < height/2 + 8)  {
-            let rand = floor(random() * 2);
-            let rand2 = floor(random() * 2);
-            let newX = this.x;
-            if (rand2 === 1) {
-                if(this.x === 40) {
-                    newX = 140;
-                }
-                else if(this.x == 140) {
-                    newX = 40
-                }
-                else if(this.x == 240) {
-                    newX = 340
-                }
-                else if(this.x == 340) {
-                    newX = 240
-                }
-            }
-            if (rand === 1) {
-                car = new Box(newX, this.side);
-            }else {
-                car = new Car(newX, this.side);
-            }
-            cars[side].push(car);   
-        }
-        if (this.y >= height-70 && this.y < height-50) {
-            if (this.x === x1) {
-                cars[side].splice(0,1);
-            }
-            else if (this.x === x2) {
-                cars[side].splice(0,1);
-            }
-        }
-        if (this.y > height - 40) {
-            alert('game over1');
-        }
+    function reset() {
+        leftLane = 0;
+        rightLane = 2;
+        obstacles = [];
+        timers = [40, 90];
+        score = 0;
+        alive = true;
+        scoreEl.textContent = '0';
+        statusEl.textContent = 'Collect the gold boxes. Avoid the red cars.';
     }
-}
 
-function keyPressed() {
-    if (keyCode === LEFT_ARROW) {
-        if (x1 === 40) {
-            x1 = 140;
-        }else {
-            x1 = 40;
+    document.addEventListener('keydown', function (event) {
+        if (event.repeat || event.metaKey || event.ctrlKey || event.altKey) return;
+        if (event.key === 'ArrowLeft' || event.key === 'a' || event.key === 'A') {
+            event.preventDefault();
+            switchLane('left');
+        } else if (event.key === 'ArrowRight' || event.key === 'd' || event.key === 'D') {
+            event.preventDefault();
+            switchLane('right');
         }
+    });
+    document.getElementById('switchLeft').addEventListener('click', function () { switchLane('left'); });
+    document.getElementById('switchRight').addEventListener('click', function () { switchLane('right'); });
+    document.getElementById('restart').addEventListener('click', reset);
+
+    reset();
+    function frame() {
+        requestAnimationFrame(frame);
+        update();
+        draw();
     }
-    else if (keyCode === RIGHT_ARROW) {
-        if (x2 === 240) {
-            x2 = 340;
-        }else {
-            x2 = 240;
-        }
-    }
-}
-
-function Pair(s) {
-    this.y = height-70;
-    
-    this.show = function () {
-        stroke(200);
-        fill(0,122,212);
-        if (s === 'l') {
-            rect(x1, this.y, carW, carH);
-        }else {
-            rect(x2, this.y, carW, carH);
-        }
-    }
-}
-
-
-
-function centerLine() {
-    let s = width/2;
-    let t = width/4;
-    let u = width*0.75;
-    rect(s,0,2,height);
-    rect(t,0,1,height);
-    rect(u,0,1,height);
-}
+    frame();
+})();
