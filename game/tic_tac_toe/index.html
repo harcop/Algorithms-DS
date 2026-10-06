@@ -4,58 +4,19 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Tic-tac-toe</title>
-    <style>
-        body {
-            margin: 0;
-            font-family: ui-sans-serif, system-ui, sans-serif;
-            background: #0f172a;
-            color: #e2e8f0;
-        }
-        main { max-width: 420px; margin: 0 auto; padding: 24px 16px 48px; }
-        a { color: #7dd3fc; }
-        h1 { margin: 8px 0; }
-        .bar { display: flex; justify-content: space-between; align-items: center; gap: 12px; }
-        button.restart {
-            font: inherit;
-            font-weight: 700;
-            border: 0;
-            border-radius: 8px;
-            background: #38bdf8;
-            color: #0f172a;
-            padding: 8px 12px;
-            cursor: pointer;
-        }
-        #status { min-height: 1.4em; color: #cbd5e1; }
-        #board {
-            display: grid;
-            grid-template-columns: repeat(3, 96px);
-            gap: 8px;
-            margin-top: 12px;
-        }
-        button.cell {
-            width: 96px;
-            height: 96px;
-            border: 0;
-            border-radius: 12px;
-            background: #1e293b;
-            color: #e2e8f0;
-            font: 700 48px/1 ui-sans-serif, system-ui, sans-serif;
-            cursor: pointer;
-        }
-        button.cell.win { background: #14532d; color: #bbf7d0; }
-        button.cell.x { color: #fb7185; }
-        button.cell.o { color: #7dd3fc; }
-        .help { color: #94a3b8; }
-    </style>
+    <link rel="stylesheet" href="../ui.css">
 </head>
-<body>
-    <main>
-        <p><a href="../index.html">All games</a></p>
-        <div class="bar">
-            <h1>Tic-tac-toe</h1>
-            <button class="restart" id="restart" type="button">New game</button>
-        </div>
-        <p id="status">Your turn. You are O.</p>
+<body class="game-ttt">
+    <main class="app">
+        <a class="back" href="../index.html">← Games</a>
+        <header class="title-row">
+            <div>
+                <p class="kicker">Duel</p>
+                <h1>Tic-tac-toe</h1>
+            </div>
+            <button id="restart" class="btn" type="button">New game</button>
+        </header>
+        <p id="status" class="status">Your turn. You are O.</p>
         <div id="board"></div>
         <p class="help">Click a square. The computer answers as X.</p>
     </main>
