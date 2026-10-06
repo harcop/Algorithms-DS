@@ -4,42 +4,23 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>2 Cars</title>
-    <style>
-        body {
-            margin: 0;
-            font-family: ui-sans-serif, system-ui, sans-serif;
-            background: #0f172a;
-            color: #e2e8f0;
-        }
-        main { max-width: 460px; margin: 0 auto; padding: 24px 16px 48px; }
-        a { color: #7dd3fc; }
-        h1 { margin: 8px 0; }
-        .bar, .controls { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; }
-        button {
-            font: inherit;
-            font-weight: 700;
-            border: 0;
-            border-radius: 8px;
-            background: #38bdf8;
-            color: #0f172a;
-            padding: 8px 12px;
-            cursor: pointer;
-        }
-        #status { min-height: 2.6em; color: #cbd5e1; }
-        canvas { display: block; background: #111827; border-radius: 8px; max-width: 100%; height: auto; }
-        .help { color: #94a3b8; }
-    </style>
+    <link rel="stylesheet" href="../ui.css">
 </head>
-<body>
-    <main>
-        <p><a href="../index.html">All games</a></p>
-        <div class="bar">
-            <h1>2 Cars</h1>
-            <strong>Score <span id="score">0</span></strong>
-            <button id="restart" type="button">Restart</button>
-        </div>
-        <p id="status">Collect the gold boxes. Avoid the red cars.</p>
-        <canvas id="board" width="420" height="560"></canvas>
+<body class="game-cars">
+    <main class="app">
+        <a class="back" href="../index.html">← Games</a>
+        <header class="title-row">
+            <div>
+                <p class="kicker">Arcade</p>
+                <h1>2 Cars</h1>
+            </div>
+            <div class="hud">
+                <div class="stat"><span>Score</span><strong id="score">0</strong></div>
+                <button id="restart" class="btn" type="button">Restart</button>
+            </div>
+        </header>
+        <p id="status" class="status">Collect the gold boxes. Avoid the red cars.</p>
+        <div class="stage"><canvas id="board" width="420" height="560"></canvas></div>
         <div class="controls">
             <button id="switchLeft" type="button">Switch left</button>
             <button id="switchRight" type="button">Switch right</button>
