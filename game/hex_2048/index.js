@@ -169,10 +169,10 @@ function bootHex() {
                 else ctx.lineTo(x, y);
             }
             ctx.closePath();
-            ctx.fillStyle = value ? hexColor(value) : 'rgba(238, 228, 218, 0.35)';
+            ctx.fillStyle = value ? hexColor(value) : '#3a312b';
             ctx.fill();
-            ctx.lineWidth = 3;
-            ctx.strokeStyle = '#bbada0';
+            ctx.lineWidth = 4;
+            ctx.strokeStyle = '#2c241f';
             ctx.stroke();
             if (value) {
                 ctx.fillStyle = value <= 4 ? '#776e65' : '#f9f6f2';
