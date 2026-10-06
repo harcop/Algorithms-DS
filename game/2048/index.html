@@ -4,83 +4,29 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>2048</title>
-    <style>
-        body {
-            margin: 0;
-            min-height: 100vh;
-            font-family: ui-sans-serif, system-ui, sans-serif;
-            background: #faf8ef;
-            color: #776e65;
-        }
-        main { max-width: 420px; margin: 0 auto; padding: 24px 16px 48px; }
-        a { color: #8f7a66; }
-        h1 { margin: 8px 0; font-size: 2.4rem; }
-        .bar, .stats { display: flex; gap: 8px; align-items: center; justify-content: space-between; }
-        .stats div, button {
-            background: #bbada0;
-            color: #f9f6f2;
-            border-radius: 6px;
-            padding: 8px 12px;
-        }
-        .stats strong { display: block; font-size: 1.2rem; }
-        .stats span { font-size: 0.75rem; text-transform: uppercase; }
-        button {
-            border: 0;
-            font: inherit;
-            font-weight: 700;
-            cursor: pointer;
-        }
-        #status { min-height: 1.4em; }
-        #board {
-            display: grid;
-            grid-template-columns: repeat(4, 72px);
-            grid-template-rows: repeat(4, 72px);
-            gap: 8px;
-            background: #bbada0;
-            padding: 8px;
-            border-radius: 8px;
-            touch-action: none;
-            margin: 12px 0;
-        }
-        .cell {
-            position: relative;
-            background: rgba(238, 228, 218, 0.35);
-            border-radius: 4px;
-        }
-        .tile {
-            position: absolute;
-            inset: 0;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            border-radius: 4px;
-            font-weight: 700;
-            font-size: 28px;
-        }
-        .tile.small { font-size: 18px; }
-        .dpad { display: grid; gap: 6px; justify-content: center; }
-        .dpad div { display: flex; gap: 6px; }
-        .help { color: #8f7a66; font-size: 0.92rem; }
-    </style>
+    <link rel="stylesheet" href="../ui.css">
 </head>
-<body>
-    <main>
-        <p><a href="../index.html">All games</a></p>
-        <div class="bar">
-            <h1>2048</h1>
-            <div class="stats">
-                <div><span>Score</span><strong id="score">0</strong></div>
-                <div><span>Best</span><strong id="best">0</strong></div>
+<body class="game-2048">
+    <main class="app">
+        <a class="back" href="../index.html">← Games</a>
+        <header class="title-row">
+            <div>
+                <p class="kicker">Puzzle</p>
+                <h1>2048</h1>
             </div>
+            <div class="hud">
+                <div class="stat"><span>Score</span><strong id="score">0</strong></div>
+                <div class="stat"><span>Best</span><strong id="best">0</strong></div>
+            </div>
+        </header>
+        <div class="toolbar">
+            <p id="status" class="status">Arrow keys or swipe to slide.</p>
+            <button id="restart" class="btn" type="button">New game</button>
         </div>
-        <div class="bar">
-            <p id="status">Arrow keys or swipe to slide.</p>
-            <button id="restart" type="button">New game</button>
-        </div>
-        <div id="board"></div>
+        <div class="stage"><div id="board"></div></div>
         <div class="dpad">
             <button type="button" data-dir="up">Up</button>
-            <div>
+            <div class="row">
                 <button type="button" data-dir="left">Left</button>
                 <button type="button" data-dir="down">Down</button>
                 <button type="button" data-dir="right">Right</button>
