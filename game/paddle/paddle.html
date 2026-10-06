@@ -4,44 +4,28 @@
     <meta charset="UTF-8">
     <title>Paddle</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <style>
-        body {
-            margin: 0;
-            font-family: ui-sans-serif, system-ui, sans-serif;
-            background: #0f172a;
-            color: #e2e8f0;
-        }
-        main { max-width: 520px; margin: 0 auto; padding: 24px 16px 48px; }
-        a { color: #7dd3fc; }
-        h1 { margin: 8px 0; }
-        .bar { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; }
-        button {
-            font: inherit;
-            font-weight: 700;
-            border: 0;
-            border-radius: 8px;
-            background: #38bdf8;
-            color: #0f172a;
-            padding: 8px 12px;
-            cursor: pointer;
-        }
-        #status { min-height: 1.4em; color: #cbd5e1; }
-        .stage { position: relative; width: 480px; max-width: 100%; }
-        canvas { background: #e2e8f0; display: block; border-radius: 8px; width: 100%; height: auto; }
-        .help { color: #94a3b8; }
-    </style>
+    <link rel="stylesheet" href="../ui.css">
 </head>
-<body>
-    <main>
-        <p><a href="../index.html">All games</a></p>
-        <h1>Paddle</h1>
-        <div class="bar">
-            <strong>Score <span id="score">0</span></strong>
-            <strong>Lives <span id="lives">3</span></strong>
-            <button id="pauseBtn" type="button">Pause</button>
-            <button id="restartBtn" type="button">Restart</button>
+<body class="game-paddle">
+    <main class="app">
+        <a class="back" href="../index.html">← Games</a>
+        <header class="title-row">
+            <div>
+                <p class="kicker">Arcade</p>
+                <h1>Paddle</h1>
+            </div>
+            <div class="hud">
+                <div class="stat"><span>Score</span><strong id="score">0</strong></div>
+                <div class="stat"><span>Lives</span><strong id="lives">3</strong></div>
+            </div>
+        </header>
+        <div class="toolbar">
+            <p id="status" class="status">Move with the mouse or the arrow keys.</p>
+            <div class="hud">
+                <button id="pauseBtn" class="btn ghost" type="button">Pause</button>
+                <button id="restartBtn" class="btn" type="button">Restart</button>
+            </div>
         </div>
-        <p id="status">Move with the mouse or the arrow keys.</p>
         <div class="stage">
             <canvas id="myCanvas" width="480" height="320"></canvas>
         </div>
@@ -200,13 +184,13 @@
         function drawBall() {
             ctx.beginPath();
             ctx.arc(x, y, ballRadius, 0, Math.PI * 2);
-            ctx.fillStyle = '#0284c7';
+            ctx.fillStyle = '#7dd3fc';
             ctx.fill();
             ctx.closePath();
         }
 
         function drawPaddle() {
-            ctx.fillStyle = '#0284c7';
+            ctx.fillStyle = '#e2e8f0';
             ctx.fillRect(paddleX, canvas.height - paddleHeight, paddleWidth, paddleHeight);
         }
 
