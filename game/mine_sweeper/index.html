@@ -4,74 +4,24 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Minesweeper</title>
-    <style>
-        body {
-            margin: 0;
-            font-family: ui-sans-serif, system-ui, sans-serif;
-            background: #0f172a;
-            color: #e2e8f0;
-        }
-        main { max-width: 460px; margin: 0 auto; padding: 24px 16px 48px; }
-        a { color: #7dd3fc; }
-        h1 { margin: 8px 0; }
-        .bar { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; }
-        button {
-            font: inherit;
-            font-weight: 700;
-            border: 0;
-            border-radius: 8px;
-            background: #38bdf8;
-            color: #0f172a;
-            padding: 8px 12px;
-            cursor: pointer;
-        }
-        button.on { background: #facc15; }
-        #status { min-height: 2.6em; color: #cbd5e1; }
-        #grid {
-            display: grid;
-            grid-template-columns: repeat(10, 32px);
-            gap: 2px;
-            width: max-content;
-            background: #334155;
-            padding: 2px;
-            border-radius: 6px;
-            user-select: none;
-        }
-        button.cell {
-            width: 32px;
-            height: 32px;
-            padding: 0;
-            border-radius: 3px;
-            background: #64748b;
-            color: #0f172a;
-            font-size: 16px;
-        }
-        button.cell.open { background: #e2e8f0; }
-        button.cell.flag { background: #facc15; }
-        button.cell.boom { background: #ef4444; color: white; }
-        button.cell.mine { background: #1e293b; color: #fecaca; }
-        button.cell[data-n="1"] { color: #1d4ed8; }
-        button.cell[data-n="2"] { color: #15803d; }
-        button.cell[data-n="3"] { color: #b91c1c; }
-        button.cell[data-n="4"] { color: #6d28d9; }
-        button.cell[data-n="5"] { color: #9a3412; }
-        button.cell[data-n="6"] { color: #0f766e; }
-        button.cell[data-n="7"] { color: #0f172a; }
-        button.cell[data-n="8"] { color: #475569; }
-        .help { color: #94a3b8; }
-    </style>
+    <link rel="stylesheet" href="../ui.css">
 </head>
-<body>
-    <main>
-        <p><a href="../index.html">All games</a></p>
-        <h1>Minesweeper</h1>
-        <div class="bar">
-            <strong>Left <span id="bombs">10</span></strong>
-            <button id="face" type="button">🙂</button>
-            <button id="flagMode" type="button">Flag mode</button>
-        </div>
-        <p id="status">Left click opens a cell. Right click, or Flag mode, marks a bomb. The first click is always safe.</p>
-        <div id="grid"></div>
+<body class="game-mine">
+    <main class="app">
+        <a class="back" href="../index.html">← Games</a>
+        <header class="title-row">
+            <div>
+                <p class="kicker">Puzzle</p>
+                <h1>Minesweeper</h1>
+            </div>
+            <div class="hud">
+                <div class="stat"><span>Left</span><strong id="bombs">10</strong></div>
+                <button id="face" class="btn icon" type="button">🙂</button>
+                <button id="flagMode" class="btn ghost" type="button">Flag mode</button>
+            </div>
+        </header>
+        <p id="status" class="status">Left click opens a cell. Right click, or Flag mode, marks a bomb. The first click is always safe.</p>
+        <div class="stage"><div id="grid"></div></div>
         <p class="help">Ten bombs on a 10 by 10 field. Open every safe cell to win.</p>
     </main>
     <script>
