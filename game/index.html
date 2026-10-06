@@ -4,53 +4,23 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Games</title>
-    <style>
-        body {
-            margin: 0;
-            font-family: ui-sans-serif, system-ui, sans-serif;
-            background: #0f172a;
-            color: #e2e8f0;
-        }
-        main {
-            max-width: 880px;
-            margin: 0 auto;
-            padding: 36px 20px 72px;
-        }
-        h1 { margin: 0 0 8px; font-size: 2rem; }
-        .lead { margin: 0 0 24px; color: #94a3b8; }
-        .grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
-            gap: 14px;
-        }
-        a.card {
-            display: block;
-            background: #1e293b;
-            border: 1px solid #334155;
-            border-radius: 12px;
-            padding: 16px 18px;
-            color: inherit;
-            text-decoration: none;
-        }
-        a.card:hover { border-color: #38bdf8; }
-        a.card strong { display: block; font-size: 1.1rem; margin-bottom: 6px; }
-        a.card span { color: #94a3b8; line-height: 1.45; }
-    </style>
+    <link rel="stylesheet" href="ui.css">
 </head>
 <body>
-    <main>
+    <main class="app home">
+        <p class="kicker">Arcade</p>
         <h1>Games</h1>
-        <p class="lead">Nine small games. Open any of them in the browser.</p>
-        <div class="grid">
-            <a class="card" href="2048/index.html"><strong>2048</strong><span>Slide tiles. Matching numbers merge into the next power of two.</span></a>
-            <a class="card" href="hex_2048/index.html"><strong>Hex 2048</strong><span>The same merge rules on a hex board, with six directions.</span></a>
-            <a class="card" href="sudoku/index.html"><strong>Sudoku</strong><span>Fill the grid so each row, column, and box contains 1–9 once.</span></a>
-            <a class="card" href="tic_tac_toe/index.html"><strong>Tic-tac-toe</strong><span>You play O. The computer plays X and tries to win or block.</span></a>
-            <a class="card" href="mine_sweeper/index.html"><strong>Minesweeper</strong><span>Open every safe cell. Flag the bombs. The first click is safe.</span></a>
-            <a class="card" href="snake/index.html"><strong>Snake</strong><span>Eat the food and avoid the walls and your own tail.</span></a>
-            <a class="card" href="paddle/paddle.html"><strong>Paddle</strong><span>Breakout. Keep the ball in play and clear the bricks.</span></a>
-            <a class="card" href="2cars/index.html"><strong>2 Cars</strong><span>Switch lanes, collect every gold box, and dodge the red cars.</span></a>
-            <a class="card" href="min_path_sum/index.html"><strong>Min path sum</strong><span>Move only right or down. Reach the corner with the smallest sum.</span></a>
+        <p class="lead">Nine small games, one quiet layout. Pick a board and play.</p>
+        <div class="catalog">
+            <a class="card" style="--mark:#f2b179" href="2048/index.html"><span class="mark">2</span><strong>2048</strong><em>Slide tiles. Matching numbers merge into the next power of two.</em></a>
+            <a class="card" style="--mark:#c4b5fd" href="hex_2048/index.html"><span class="mark">H</span><strong>Hex 2048</strong><em>The same merge rules on a hex board, with six directions.</em></a>
+            <a class="card" style="--mark:#93c5fd" href="sudoku/index.html"><span class="mark">9</span><strong>Sudoku</strong><em>Fill the grid so each row, column, and box contains 1–9 once.</em></a>
+            <a class="card" style="--mark:#5eead4" href="tic_tac_toe/index.html"><span class="mark">O</span><strong>Tic-tac-toe</strong><em>You play O. The computer plays X and tries to win or block.</em></a>
+            <a class="card" style="--mark:#f5d76e" href="mine_sweeper/index.html"><span class="mark">!</span><strong>Minesweeper</strong><em>Open every safe cell. Flag the bombs. The first click is safe.</em></a>
+            <a class="card" style="--mark:#86efac" href="snake/index.html"><span class="mark">S</span><strong>Snake</strong><em>Eat the food and avoid the walls and your own tail.</em></a>
+            <a class="card" style="--mark:#7dd3fc" href="paddle/paddle.html"><span class="mark">P</span><strong>Paddle</strong><em>Breakout. Keep the ball in play and clear the bricks.</em></a>
+            <a class="card" style="--mark:#fda4af" href="2cars/index.html"><span class="mark">2</span><strong>2 Cars</strong><em>Switch lanes, collect every gold box, and dodge the red cars.</em></a>
+            <a class="card" style="--mark:#a5b4fc" href="min_path_sum/index.html"><span class="mark">Σ</span><strong>Min path sum</strong><em>Move only right or down. Reach the corner with the smallest sum.</em></a>
         </div>
     </main>
 </body>
