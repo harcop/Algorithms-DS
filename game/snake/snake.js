@@ -35,7 +35,7 @@
     }
 
     function draw() {
-        ctx.fillStyle = '#020617';
+        ctx.fillStyle = '#10131b';
         ctx.fillRect(0, 0, canvas.width, canvas.height);
         ctx.fillStyle = '#fb7185';
         ctx.beginPath();
