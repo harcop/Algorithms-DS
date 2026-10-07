@@ -8,31 +8,30 @@
 </head>
 <body class="game-hex">
     <main class="app">
-        <a class="back" href="../index.html">← Games</a>
-        <header class="title-row">
-            <div>
-                <p class="kicker">Puzzle</p>
-                <h1>Hex 2048</h1>
-            </div>
-            <div class="hud">
-                <div class="stat"><span>Score</span><strong id="score">0</strong></div>
-                <div class="stat"><span>Best</span><strong id="best">0</strong></div>
-            </div>
+        <header class="topbar">
+            <a class="menu" href="../index.html" aria-label="All games">☰</a>
+            <div class="pill">Hex 2048</div>
+            <div class="pill">★ <strong id="score">0</strong></div>
+            <div class="quiet">Best <strong id="best">0</strong></div>
         </header>
-        <div class="toolbar">
-            <p id="status" class="status">Slide in any of the six directions.</p>
-            <button id="restart" class="btn" type="button">New game</button>
-        </div>
-        <div class="stage"><canvas id="board" width="520" height="460"></canvas></div>
-        <div class="hexpad">
-            <button type="button" data-dir="NW">NW <kbd>Q</kbd></button>
-            <button type="button" data-dir="NE">NE <kbd>W</kbd></button>
-            <button type="button" data-dir="W">W <kbd>A</kbd></button>
-            <button type="button" data-dir="E">E <kbd>D</kbd></button>
-            <button type="button" data-dir="SW">SW <kbd>Z</kbd></button>
-            <button type="button" data-dir="SE">SE <kbd>X</kbd></button>
-        </div>
-        <p class="help">Arrow keys cover west, east, northeast, and southeast. You can also drag across the board.</p>
+        <section class="shell">
+            <div class="shell-tools">
+                <button id="restart" class="orb" type="button" aria-label="New game">↺</button>
+            </div>
+            <div class="play">
+                <p id="status" class="bubble">Slide in any of the six directions.</p>
+                <div class="stage"><canvas id="board" width="520" height="460"></canvas></div>
+            </div>
+            <p class="caption">Drag, or use the six directions</p>
+            <div class="hexpad">
+                <button type="button" data-dir="NW">NW Q</button>
+                <button type="button" data-dir="NE">NE W</button>
+                <button type="button" data-dir="W">W A</button>
+                <button type="button" data-dir="E">E D</button>
+                <button type="button" data-dir="SW">SW Z</button>
+                <button type="button" data-dir="SE">SE X</button>
+            </div>
+        </section>
     </main>
     <script src="./index.js"></script>
 </body>
