@@ -8,17 +8,20 @@
 </head>
 <body class="game-ttt">
     <main class="app">
-        <a class="back" href="../index.html">← Games</a>
-        <header class="title-row">
-            <div>
-                <p class="kicker">Duel</p>
-                <h1>Tic-tac-toe</h1>
-            </div>
-            <button id="restart" class="btn" type="button">New game</button>
+        <header class="topbar">
+            <a class="menu" href="../index.html" aria-label="All games">☰</a>
+            <div class="pill">Tic-tac-toe</div>
         </header>
-        <p id="status" class="status">Your turn. You are O.</p>
-        <div id="board"></div>
-        <p class="help">Click a square. The computer answers as X.</p>
+        <section class="shell">
+            <div class="shell-tools">
+                <button id="restart" class="orb" type="button" aria-label="New game">↺</button>
+            </div>
+            <div class="play">
+                <p id="status" class="bubble">Your turn. You are O.</p>
+                <div id="board"></div>
+            </div>
+            <p class="caption">You are O. The computer is X.</p>
+        </section>
     </main>
     <script src="./index.js"></script>
 </body>
