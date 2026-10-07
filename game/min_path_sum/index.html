@@ -8,24 +8,25 @@
 </head>
 <body class="game-path">
     <main class="app">
-        <a class="back" href="../index.html">← Games</a>
-        <header class="title-row">
-            <div>
-                <p class="kicker">Puzzle</p>
-                <h1>Min path sum</h1>
-            </div>
-            <div class="stat"><span>Sum</span><strong id="sum">0</strong></div>
+        <header class="topbar">
+            <a class="menu" href="../index.html" aria-label="All games">☰</a>
+            <div class="pill">Min path</div>
+            <div class="pill">Σ <strong id="sum">0</strong></div>
         </header>
-        <p id="status" class="status"></p>
-        <div id="grid"></div>
-        <div class="controls">
-            <button id="right" class="btn" type="button">Right</button>
-            <button id="down" class="btn" type="button">Down</button>
-            <button id="undo" class="btn ghost" type="button">Undo</button>
-            <button id="best" class="btn ghost" type="button">Show best</button>
-            <button id="restart" class="btn ghost" type="button">New board</button>
-        </div>
-        <p class="help">Start at the top left. Move only right or down. Left and up undo the last step. Match the best sum at the bottom right.</p>
+        <section class="shell">
+            <div class="play">
+                <p id="status" class="bubble"></p>
+                <div class="stage"><div id="grid"></div></div>
+            </div>
+            <p class="caption">Only right or down. Match the best sum.</p>
+            <div class="controls">
+                <button id="right" class="btn" type="button">Right</button>
+                <button id="down" class="btn" type="button">Down</button>
+                <button id="undo" class="btn ghost" type="button">Undo</button>
+                <button id="best" class="btn ghost" type="button">Show best</button>
+                <button id="restart" class="btn ghost" type="button">New board</button>
+            </div>
+        </section>
     </main>
     <script src="./mps_game.js"></script>
 </body>
