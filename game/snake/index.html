@@ -8,20 +8,21 @@
 </head>
 <body class="game-snake">
     <main class="app">
-        <a class="back" href="../index.html">← Games</a>
-        <header class="title-row">
-            <div>
-                <p class="kicker">Arcade</p>
-                <h1>Snake</h1>
-            </div>
-            <div class="hud">
-                <div class="stat"><span>Score</span><strong id="score">0</strong></div>
-                <button id="restart" class="btn" type="button">Restart</button>
-            </div>
+        <header class="topbar">
+            <a class="menu" href="../index.html" aria-label="All games">☰</a>
+            <div class="pill">Snake</div>
+            <div class="pill">★ <strong id="score">0</strong></div>
         </header>
-        <p id="status" class="status">Arrow keys to turn.</p>
-        <div class="stage"><canvas id="board" width="400" height="400"></canvas></div>
-        <p class="help">Eat the red food. Hitting a wall or your tail ends the run.</p>
+        <section class="shell">
+            <div class="shell-tools">
+                <button id="restart" class="orb" type="button" aria-label="Restart">↺</button>
+            </div>
+            <div class="play">
+                <p id="status" class="bubble">Arrow keys to turn.</p>
+                <div class="stage"><canvas id="board" width="400" height="400"></canvas></div>
+            </div>
+            <p class="caption">Eat the food. Avoid walls and your tail.</p>
+        </section>
     </main>
     <script src="./snake.js"></script>
 </body>
