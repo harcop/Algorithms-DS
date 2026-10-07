@@ -8,18 +8,21 @@
 </head>
 <body class="game-sudoku">
     <main class="app">
-        <a class="back" href="../index.html">← Games</a>
-        <header class="title-row">
-            <div>
-                <p class="kicker">Puzzle</p>
-                <h1>Sudoku</h1>
-            </div>
-            <button id="restart" class="btn" type="button">New puzzle</button>
+        <header class="topbar">
+            <a class="menu" href="../index.html" aria-label="All games">☰</a>
+            <div class="pill">Sudoku</div>
         </header>
-        <p id="status" class="status">Building a puzzle…</p>
-        <div class="stage"><div id="grid"></div></div>
-        <div id="pad"></div>
-        <p class="help">Select a cell, then type a digit. Shaded numbers are clues. Conflicts turn red.</p>
+        <section class="shell">
+            <div class="shell-tools">
+                <button id="restart" class="orb" type="button" aria-label="New puzzle">↺</button>
+            </div>
+            <div class="play">
+                <p id="status" class="bubble">Building a puzzle…</p>
+                <div class="stage"><div id="grid"></div></div>
+            </div>
+            <div id="pad"></div>
+            <p class="caption">Each row, column, and box uses 1–9 once</p>
+        </section>
     </main>
     <script src="./index.js"></script>
 </body>
