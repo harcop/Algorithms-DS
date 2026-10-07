@@ -169,14 +169,14 @@ function bootHex() {
                 else ctx.lineTo(x, y);
             }
             ctx.closePath();
-            ctx.fillStyle = value ? hexColor(value) : '#3a312b';
+            ctx.fillStyle = value ? hexColor(value) : '#2c2433';
             ctx.fill();
             ctx.lineWidth = 4;
-            ctx.strokeStyle = '#2c241f';
+            ctx.strokeStyle = '#1b1522';
             ctx.stroke();
             if (value) {
                 ctx.fillStyle = value <= 4 ? '#776e65' : '#f9f6f2';
-                ctx.font = (value >= 1024 ? 'bold 14px ' : 'bold 18px ') + 'ui-sans-serif, system-ui, sans-serif';
+                ctx.font = (value >= 1024 ? '800 14px ' : '800 18px ') + 'Outfit, ui-sans-serif, system-ui, sans-serif';
                 ctx.textAlign = 'center';
                 ctx.textBaseline = 'middle';
                 ctx.fillText(String(value), point.x, point.y);
