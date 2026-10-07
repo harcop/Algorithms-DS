@@ -8,28 +8,25 @@
 </head>
 <body class="game-paddle">
     <main class="app">
-        <a class="back" href="../index.html">← Games</a>
-        <header class="title-row">
-            <div>
-                <p class="kicker">Arcade</p>
-                <h1>Paddle</h1>
-            </div>
-            <div class="hud">
-                <div class="stat"><span>Score</span><strong id="score">0</strong></div>
-                <div class="stat"><span>Lives</span><strong id="lives">3</strong></div>
-            </div>
+        <header class="topbar">
+            <a class="menu" href="../index.html" aria-label="All games">☰</a>
+            <div class="pill">Paddle</div>
+            <div class="pill">★ <strong id="score">0</strong></div>
+            <div class="quiet">Lives <strong id="lives">3</strong></div>
         </header>
-        <div class="toolbar">
-            <p id="status" class="status">Move with the mouse or the arrow keys.</p>
-            <div class="hud">
+        <section class="shell">
+            <div class="play">
+                <p id="status" class="bubble">Move with the mouse or the arrow keys.</p>
+                <div class="stage">
+                    <canvas id="myCanvas" width="480" height="320"></canvas>
+                </div>
+            </div>
+            <p class="caption">Clear every brick. A miss costs a life.</p>
+            <div class="actions">
                 <button id="pauseBtn" class="btn ghost" type="button">Pause</button>
                 <button id="restartBtn" class="btn" type="button">Restart</button>
             </div>
-        </div>
-        <div class="stage">
-            <canvas id="myCanvas" width="480" height="320"></canvas>
-        </div>
-        <p class="help">Clear every brick. Missing the ball costs a life.</p>
+        </section>
     </main>
     <script>
         var canvas = document.getElementById('myCanvas');
