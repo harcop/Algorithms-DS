@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cube</title>
+    <link rel="stylesheet" href="../ui.css">
+</head>
+<body class="game-cube">
+    <main class="app">
+        <header class="topbar">
+            <a class="menu" href="../index.html" aria-label="All games">☰</a>
+            <div class="pill">Cube</div>
+            <div class="pill">Turns <strong id="turns">0</strong></div>
+            <div class="pill"><strong id="time">0:00.0</strong></div>
+            <div class="quiet">Best <strong id="best">—</strong></div>
+        </header>
+        <section class="shell">
+            <div class="shell-tools">
+                <button id="restart" class="orb" type="button" aria-label="Reset cube">↺</button>
+            </div>
+            <div class="play">
+                <p id="status" class="bubble">I am the cube.</p>
+                <div class="viewport" id="viewport">
+                    <div class="cube-shadow"></div>
+                    <div class="cube-rig" id="rig">
+                        <div class="cube" id="cube"></div>
+                    </div>
+                </div>
+            </div>
+            <p class="caption" id="caption">Drag a sticker to turn. Keys U D L R F B — shift reverses.</p>
+            <div class="moves" id="moves">
+                <button class="btn" type="button" data-move="U">U</button>
+                <button class="btn" type="button" data-move="U'">U′</button>
+                <button class="btn" type="button" data-move="D">D</button>
+                <button class="btn" type="button" data-move="D'">D′</button>
+                <button class="btn" type="button" data-move="L">L</button>
+                <button class="btn" type="button" data-move="L'">L′</button>
+                <button class="btn" type="button" data-move="R">R</button>
+                <button class="btn" type="button" data-move="R'">R′</button>
+                <button class="btn" type="button" data-move="F">F</button>
+                <button class="btn" type="button" data-move="F'">F′</button>
+                <button class="btn" type="button" data-move="B">B</button>
+                <button class="btn" type="button" data-move="B'">B′</button>
+            </div>
+            <div class="actions">
+                <button id="scramble" class="btn" type="button">Scramble</button>
+                <button id="undo" class="btn ghost" type="button">Undo</button>
+            </div>
+        </section>
+    </main>
+    <script src="./cube.js"></script>
+</body>
+</html>
