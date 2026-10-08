@@ -19,6 +19,7 @@ body.game-snake { --shell: #22c55e; }
 body.game-paddle { --shell: #38bdf8; }
 body.game-cars { --shell: #ff4d6d; }
 body.game-path { --shell: #6366f1; }
+body.game-cube { --shell: #f472b6; }
 
 * { box-sizing: border-box; }
 
@@ -432,3 +433,101 @@ button:focus-visible, a:focus-visible {
     outline: 3px solid #fff;
     outline-offset: 2px;
 }
+
+body.game-cube .app { width: min(560px, calc(100% - 28px)); }
+
+.game-cube .viewport {
+    position: relative;
+    height: min(92vw, 420px);
+    border-radius: 22px;
+    touch-action: none;
+    user-select: none;
+    cursor: grab;
+    display: grid;
+    place-items: center;
+    perspective: 900px;
+    perspective-origin: 50% 42%;
+    background: radial-gradient(ellipse at 50% 42%, rgba(255, 255, 255, 0.16), transparent 42%), #1b1522;
+}
+
+.game-cube .viewport.dragging { cursor: grabbing; }
+
+.game-cube .cube-shadow {
+    position: absolute;
+    left: 50%;
+    bottom: 9%;
+    width: 46%;
+    height: 28px;
+    transform: translateX(-50%);
+    border-radius: 50%;
+    background: radial-gradient(ellipse, rgba(0, 0, 0, 0.45), transparent 70%);
+    pointer-events: none;
+}
+
+.game-cube .cube-rig,
+.game-cube .cube,
+.game-cube .turn,
+.game-cube .cubie {
+    transform-style: preserve-3d;
+}
+
+.game-cube .cube-rig,
+.game-cube .cube,
+.game-cube .turn {
+    position: relative;
+    width: 0;
+    height: 0;
+}
+
+.game-cube .cubie {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: var(--cubie, 52px);
+    height: var(--cubie, 52px);
+    margin-left: calc(var(--cubie, 52px) / -2);
+    margin-top: calc(var(--cubie, 52px) / -2);
+}
+
+.game-cube .face {
+    position: absolute;
+    inset: 0;
+    border-radius: 7px;
+    background: linear-gradient(145deg, #3c3444, #141118);
+    box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.07);
+    backface-visibility: hidden;
+}
+
+.game-cube .face-pz { transform: translateZ(var(--half, 26px)); }
+.game-cube .face-nz { transform: rotateY(180deg) translateZ(var(--half, 26px)); }
+.game-cube .face-px { transform: rotateY(90deg) translateZ(var(--half, 26px)); }
+.game-cube .face-nx { transform: rotateY(-90deg) translateZ(var(--half, 26px)); }
+.game-cube .face-py { transform: rotateX(90deg) translateZ(var(--half, 26px)); }
+.game-cube .face-ny { transform: rotateX(-90deg) translateZ(var(--half, 26px)); }
+
+.game-cube .sticker {
+    position: absolute;
+    inset: 13%;
+    border-radius: 4px;
+    background:
+        linear-gradient(155deg, rgba(255, 255, 255, 0.55), rgba(255, 255, 255, 0) 42%),
+        var(--c);
+    box-shadow: inset 0 0 0 1px rgba(0, 0, 0, 0.18);
+    backface-visibility: hidden;
+}
+
+.game-cube .s-W { --c: #f4f1ea; }
+.game-cube .s-Y { --c: #ffd500; }
+.game-cube .s-G { --c: #009b48; }
+.game-cube .s-B { --c: #0046ad; }
+.game-cube .s-R { --c: #b71234; }
+.game-cube .s-O { --c: #ff5800; }
+
+.game-cube .moves {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 8px;
+    margin-top: 12px;
+}
+
+.game-cube .moves button { padding: 0 8px; }
