@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tetris</title>
+    <link rel="stylesheet" href="../ui.css">
+</head>
+<body class="game-tetris">
+    <main class="app">
+        <header class="topbar">
+            <a class="menu" href="../index.html" aria-label="All games">☰</a>
+            <div class="pill">Tetris</div>
+            <div class="pill">★ <strong id="score">0</strong></div>
+            <div class="quiet">Best <strong id="best">0</strong></div>
+        </header>
+        <section class="shell">
+            <div class="shell-tools">
+                <button id="restart" class="orb" type="button" aria-label="Restart">↺</button>
+                <button id="pause" class="orb" type="button" aria-label="Pause">❚❚</button>
+            </div>
+            <div class="play">
+                <p id="status" class="bubble">Arrows move. Up rotates. Space drops.</p>
+                <div class="well">
+                    <div class="tray">
+                        <span>Hold</span>
+                        <canvas id="hold" width="96" height="80"></canvas>
+                    </div>
+                    <canvas id="board" width="240" height="480"></canvas>
+                    <div class="tray">
+                        <span>Next</span>
+                        <canvas id="next" width="96" height="80"></canvas>
+                        <span class="stat">Lv <strong id="level">1</strong></span>
+                        <span class="stat">Lines <strong id="lines">0</strong></span>
+                    </div>
+                </div>
+            </div>
+            <p class="caption">Clear lines. Four at once is a Tetris.</p>
+            <div class="dpad">
+                <div class="row">
+                    <button class="btn" type="button" data-act="ccw" aria-label="Rotate left">↺</button>
+                    <button class="btn" type="button" data-act="left" aria-label="Move left">←</button>
+                    <button class="btn" type="button" data-act="right" aria-label="Move right">→</button>
+                    <button class="btn" type="button" data-act="cw" aria-label="Rotate right">↻</button>
+                </div>
+                <div class="row">
+                    <button class="btn" type="button" data-act="hold">Hold</button>
+                    <button class="btn" type="button" data-act="soft" aria-label="Soft drop">↓</button>
+                    <button class="btn" type="button" data-act="hard">Drop</button>
+                </div>
+            </div>
+        </section>
+    </main>
+    <script src="./tetris.js"></script>
+</body>
+</html>
