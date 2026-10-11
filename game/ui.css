@@ -20,6 +20,7 @@ body.game-paddle { --shell: #38bdf8; }
 body.game-cars { --shell: #ff4d6d; }
 body.game-path { --shell: #6366f1; }
 body.game-cube { --shell: #f472b6; }
+body.game-tetris { --shell: #06b6d4; }
 
 * { box-sizing: border-box; }
 
@@ -531,3 +532,54 @@ body.game-cube .app { width: min(560px, calc(100% - 28px)); }
 }
 
 .game-cube .moves button { padding: 0 8px; }
+
+.game-tetris .well {
+    display: grid;
+    grid-template-columns: 72px minmax(0, 1fr) 72px;
+    gap: 8px;
+    align-items: start;
+}
+
+.game-tetris canvas#board {
+    display: block;
+    width: 100%;
+    height: auto;
+    border-radius: 18px;
+    background: #1b1522;
+    touch-action: none;
+}
+
+.game-tetris .tray {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    color: #fff8ee;
+    font-size: 0.72rem;
+    font-weight: 800;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+}
+
+.game-tetris .tray canvas {
+    width: 100%;
+    height: auto;
+    border-radius: 12px;
+    background: #1b1522;
+}
+
+.game-tetris .stat {
+    padding: 8px 6px;
+    border-radius: 12px;
+    background: color-mix(in srgb, var(--shell) 55%, #140e18);
+    text-align: center;
+    text-transform: none;
+    letter-spacing: 0;
+}
+
+.game-tetris .stat strong {
+    display: block;
+    font-size: 1rem;
+    font-variant-numeric: tabular-nums;
+}
+
+.game-tetris .dpad button { width: 64px; padding: 0 10px; }
